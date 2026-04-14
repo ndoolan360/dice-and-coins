@@ -269,10 +269,19 @@ label {
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
+  align-items: center;
   gap: 0.5rem;
   border: none;
   margin: 0;
   padding: 0;
+}
+
+.dice-separator {
+  opacity: 0.5;
+}
+
+#dice-modifier-input {
+  width: 4rem;
 }
 
 .dice-actions {
