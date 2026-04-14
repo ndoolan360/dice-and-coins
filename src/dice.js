@@ -6,10 +6,23 @@ const diceClear = document.getElementById('dice-clear');
 const diceSum = document.getElementById('dice-sum');
 const diceBreakdown = document.getElementById('dice-breakdown');
 const diceSelector = document.getElementById('dice-selector');
+const diceBase = document.getElementById('dice-base');
 
 const VALID_DICE = new Set(['d4', 'd6', 'd8', 'd10', 'd12', 'd20']);
 
 let isRolling = false;
+
+function animateCount(element, target, duration = 600) {
+  const start = performance.now();
+  function step(now) {
+    const elapsed = now - start;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    element.textContent = Math.round(eased * target);
+    if (progress < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
 
 function updateControls() {
   const hasDice = diceTray.querySelector('.die') !== null;
@@ -20,11 +33,19 @@ function updateControls() {
 function updateDiceParams() {
   const url = new URL(window.location);
   const dice = diceTray.querySelectorAll('.die > span');
-  if (dice.length === 0) {
+  const base = parseInt(diceBase.value, 10) || 0;
+
+  const parts = [];
+  if (dice.length > 0) {
+    const types = Array.from(dice, (die) => die.classList[0]);
+    parts.push(aggregateDieTypes(types, ' '));
+  }
+  if (base !== 0) parts.push(String(base));
+
+  if (parts.length === 0) {
     url.searchParams.delete('dice');
   } else {
-    const types = Array.from(dice, (die) => die.classList[0]);
-    url.searchParams.set('dice', aggregateDieTypes(types, '_'));
+    url.searchParams.set('dice', parts.join(' '));
   }
   history.replaceState(null, '', url);
 }
@@ -53,6 +74,8 @@ function rollDice() {
 
   isRolling = true;
   updateControls();
+  diceSum.textContent = '...';
+  diceBreakdown.textContent = '';
 
   const results = [];
   const dieTypes = [];
@@ -71,15 +94,22 @@ function rollDice() {
 
   // Update display after CSS transition completes
   setTimeout(() => {
-    diceSum.textContent = sum;
-    diceBreakdown.textContent =
-      results.length > 1 ? results.join(' + ') : '';
+    const base = parseInt(diceBase.value, 10) || 0;
+    const total = sum + base;
+
+    animateCount(diceSum, total);
+
+    const breakdownParts = results.length > 1 ? [...results] : [];
+    if (base !== 0) breakdownParts.push(`${base} (base)`);
+    diceBreakdown.textContent = breakdownParts.join(' + ');
 
     const description = aggregateDieTypes(dieTypes);
-    if (results.length > 1) {
-      addHistoryEntry(`\u{1F3B2} ${description}: ${results.join(' + ')} = ${sum}`);
+    const rollStr = results.join(' + ');
+    const baseStr = base !== 0 ? ` + ${base} (base)` : '';
+    if (results.length > 1 || base !== 0) {
+      addHistoryEntry(`\u{1F3B2} ${description}: ${rollStr}${baseStr} = ${total}`);
     } else {
-      addHistoryEntry(`\u{1F3B2} ${description}: ${sum}`);
+      addHistoryEntry(`\u{1F3B2} ${description}: ${total}`);
     }
 
     isRolling = false;
@@ -102,13 +132,23 @@ export function initDice() {
 
   diceRoll.addEventListener('click', rollDice);
   diceClear.addEventListener('click', clearDice);
+  diceBase.addEventListener('input', updateDiceParams);
   updateControls();
   loadDiceFromParams();
 }
 
 function parseDiceParam(param) {
   const dice = [];
-  for (const group of param.split('_')) {
+  let base = 0;
+  const groups = param.split(' ');
+
+  // If the last segment is a plain integer, treat it as the flat base
+  const last = groups[groups.length - 1];
+  if (/^-?\d+$/.test(last)) {
+    base = parseInt(groups.pop(), 10);
+  }
+
+  for (const group of groups) {
     const match = group.match(/^(\d*)(d\d+)$/);
     if (!match || !VALID_DICE.has(match[2])) continue;
     const count = match[1] ? parseInt(match[1], 10) : 1;
@@ -116,16 +156,18 @@ function parseDiceParam(param) {
       dice.push(match[2]);
     }
   }
-  return dice;
+  return { dice, base };
 }
 
 function loadDiceFromParams() {
   const diceParam = new URL(window.location).searchParams.get('dice');
   if (!diceParam) return;
 
-  for (const sides of parseDiceParam(diceParam)) {
+  const { dice, base } = parseDiceParam(diceParam);
+  for (const sides of dice) {
     addDie(sides);
   }
+  if (base !== 0) diceBase.value = base;
 }
 
 function aggregateDieTypes(dieTypes, separator = ' + ') {
