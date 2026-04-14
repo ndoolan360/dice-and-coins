@@ -164,7 +164,7 @@ function clearDice() {
   diceTray.querySelectorAll('.die-wrapper').forEach((die) => die.remove());
   diceSum.textContent = '-';
   diceBreakdown.textContent = '';
-  diceMod.value = '0';
+  diceMod.value = '';
   updateControls();
   updateDiceParams();
 }
