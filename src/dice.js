@@ -6,7 +6,7 @@ const diceClear = document.getElementById('dice-clear');
 const diceSum = document.getElementById('dice-sum');
 const diceBreakdown = document.getElementById('dice-breakdown');
 const diceSelector = document.getElementById('dice-selector');
-const diceBase = document.getElementById('dice-base');
+const diceMod = document.getElementById('dice-modifier-input');
 
 const VALID_DICE = new Set(['d4', 'd6', 'd8', 'd10', 'd12', 'd20']);
 
@@ -29,22 +29,22 @@ function animateCount(element, target, duration = 600, onComplete) {
 }
 
 function updateControls() {
-  const hasDice = diceTray.querySelector('.die') !== null;
+  const hasDice = diceTray.querySelector('.die-wrapper') !== null;
   diceRoll.disabled = isRolling || !hasDice;
   diceClear.disabled = isRolling || !hasDice;
 }
 
 function updateDiceParams() {
   const url = new URL(window.location);
-  const dice = diceTray.querySelectorAll('.die > span');
-  const base = parseInt(diceBase.value, 10) || 0;
+  const dice = diceTray.querySelectorAll('.die-wrapper > .die');
+  const mod = parseInt(diceMod.value, 10) || 0;
 
   const parts = [];
   if (dice.length > 0) {
-    const types = Array.from(dice, (die) => die.classList[0]);
+    const types = Array.from(dice, (die) => die.classList[1]);
     parts.push(aggregateDieTypes(types, ' '));
   }
-  if (base !== 0) parts.push(String(base));
+  if (mod !== 0) parts.push(String(mod));
 
   if (parts.length === 0) {
     url.searchParams.delete('dice');
@@ -59,7 +59,7 @@ function addDie(sides) {
   if (!template) return;
 
   const clone = template.content.cloneNode(true);
-  const li = clone.querySelector('.die');
+  const li = clone.querySelector('.die-wrapper');
 
   li.querySelector('.die-remove').addEventListener('click', () => {
     li.remove();
@@ -73,7 +73,7 @@ function addDie(sides) {
 }
 
 function rollDice() {
-  const dice = diceTray.querySelectorAll('.die > span');
+  const dice = diceTray.querySelectorAll('.die-wrapper > .die');
   if (dice.length === 0) return;
 
   isRolling = true;
@@ -85,7 +85,7 @@ function rollDice() {
   const dieTypes = [];
 
   dice.forEach((die) => {
-    const dieType = die.classList[0];
+    const dieType = die.classList[1];
     const max = parseInt(dieType.slice(1), 10);
     const roll = Math.floor(Math.random() * max) + 1;
     results.push(roll);
@@ -98,33 +98,34 @@ function rollDice() {
 
   // Update display after CSS transition completes
   setTimeout(() => {
-    const base = parseInt(diceBase.value, 10) || 0;
-    const total = sum + base;
+    const mod = parseInt(diceMod.value, 10) || 0;
+    const total = sum + mod;
 
     const breakdownParts = results.length > 1 ? [...results] : [];
-    if (base !== 0) breakdownParts.push(`${base} (base)`);
+    if (mod !== 0) breakdownParts.push(mod);
     diceBreakdown.textContent = breakdownParts.join(' + ');
 
     const description = aggregateDieTypes(dieTypes);
     const rollStr = results.join(' + ');
-    const baseStr = base !== 0 ? ` + ${base} (base)` : '';
-    if (results.length > 1 || base !== 0) {
-      addHistoryEntry(`\u{1F3B2} ${description}: ${rollStr}${baseStr} = ${total}`);
+    const modStr = mod !== 0 ? ` + ${mod}` : '';
+    if (results.length > 1 || mod !== 0) {
+      addHistoryEntry(`🎲 ${description}${modStr}: (${rollStr}${modStr}) ${total}`);
     } else {
-      addHistoryEntry(`\u{1F3B2} ${description}: ${total}`);
+      addHistoryEntry(`🎲 ${description}: ${total}`);
     }
 
     animateCount(diceSum, total, 600, () => {
       isRolling = false;
       updateControls();
     });
-  }, 2050);
+  }, 1550);
 }
 
 function clearDice() {
-  diceTray.querySelectorAll('.die').forEach((die) => die.remove());
-  diceSum.textContent = '???';
+  diceTray.querySelectorAll('.die-wrapper').forEach((die) => die.remove());
+  diceSum.textContent = '-';
   diceBreakdown.textContent = '';
+  diceMod.value = '0';
   updateControls();
   updateDiceParams();
 }
@@ -136,20 +137,20 @@ export function initDice() {
 
   diceRoll.addEventListener('click', rollDice);
   diceClear.addEventListener('click', clearDice);
-  diceBase.addEventListener('input', updateDiceParams);
+  diceMod.addEventListener('input', updateDiceParams);
   updateControls();
   loadDiceFromParams();
 }
 
 function parseDiceParam(param) {
   const dice = [];
-  let base = 0;
+  let mod = 0;
   const groups = param.split(' ');
 
-  // If the last segment is a plain integer, treat it as the flat base
+  // If the last segment is a plain integer, treat it as the flat mod
   const last = groups[groups.length - 1];
   if (/^-?\d+$/.test(last)) {
-    base = parseInt(groups.pop(), 10);
+    mod = parseInt(groups.pop(), 10);
   }
 
   for (const group of groups) {
@@ -160,18 +161,18 @@ function parseDiceParam(param) {
       dice.push(match[2]);
     }
   }
-  return { dice, base };
+  return { dice, mod };
 }
 
 function loadDiceFromParams() {
   const diceParam = new URL(window.location).searchParams.get('dice');
   if (!diceParam) return;
 
-  const { dice, base } = parseDiceParam(diceParam);
+  const { dice, mod } = parseDiceParam(diceParam);
   for (const sides of dice) {
     addDie(sides);
   }
-  if (base !== 0) diceBase.value = base;
+  if (mod !== 0) diceMod.value = mod;
 }
 
 function aggregateDieTypes(dieTypes, separator = ' + ') {
@@ -179,6 +180,7 @@ function aggregateDieTypes(dieTypes, separator = ' + ') {
     acc[type] = (acc[type] || 0) + 1;
     return acc;
   }, {});
+  console.log('Aggregated die counts:', counts);
   return Object.entries(counts)
     .sort((a, b) => parseInt(a[0].slice(1)) - parseInt(b[0].slice(1)))
     .map(([type, count]) => `${count}${type}`)
@@ -264,7 +266,7 @@ const dieRotX = new WeakMap();
 const dieRotY = new WeakMap();
 
 export function gotoRoll(element, facenum) {
-  const dieType = element?.classList?.[0];
+  const dieType = element?.classList?.[1];
   if (!dieType || diceRotations[dieType] === undefined) {
     console.warn(`No rotations defined for die type ${dieType}`);
     return;

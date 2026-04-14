@@ -23,8 +23,8 @@
   <section id="dice" aria-label="Dice roller">
     <ul id="dice-tray" aria-label="Dice to roll" aria-live="polite">
       <template id="d4-template">
-        <li class="die" role="group" aria-label="Die">
-          <span class="d4" role="img" aria-label="Four-sided die">
+        <li class="die-wrapper" role="group" aria-label="Die">
+          <span class="die d4" role="img" aria-label="Four-sided die">
             <span class="die-face d4-face d4-face-1">1</span>
             <span class="die-face d4-face d4-face-2">2</span>
             <span class="die-face d4-face d4-face-3">3</span>
@@ -34,8 +34,8 @@
         </li>
       </template>
       <template id="d6-template">
-        <li class="die" role="group" aria-label="Die">
-          <span class="d6" role="img" aria-label="Six-sided die">
+        <li class="die-wrapper" role="group" aria-label="Die">
+          <span class="die d6" role="img" aria-label="Six-sided die">
             <span class="die-face d6-face d6-face-1">1</span>
             <span class="die-face d6-face d6-face-2">2</span>
             <span class="die-face d6-face d6-face-3">3</span>
@@ -47,8 +47,8 @@
         </li>
       </template>
       <template id="d8-template">
-        <li class="die" role="group" aria-label="Die">
-          <span class="d8" role="img" aria-label="Eight-sided die">
+        <li class="die-wrapper" role="group" aria-label="Die">
+          <span class="die d8" role="img" aria-label="Eight-sided die">
             <span class="die-face d8-face d8-face-1">1</span>
             <span class="die-face d8-face d8-face-2">2</span>
             <span class="die-face d8-face d8-face-3">3</span>
@@ -62,8 +62,8 @@
         </li>
       </template>
       <template id="d10-template">
-        <li class="die" role="group" aria-label="Die">
-          <span class="d10" role="img" aria-label="Ten-sided die">
+        <li class="die-wrapper" role="group" aria-label="Die">
+          <span class="die d10" role="img" aria-label="Ten-sided die">
             <span class="die-face d10-face d10-face-1">1</span>
             <span class="die-face d10-face d10-face-2">2</span>
             <span class="die-face d10-face d10-face-3">3</span>
@@ -79,8 +79,8 @@
         </li>
       </template>
       <template id="d12-template">
-        <li class="die" role="group" aria-label="Die">
-          <span class="d12" role="img" aria-label="Twelve-sided die">
+        <li class="die-wrapper" role="group" aria-label="Die">
+          <span class="die d12" role="img" aria-label="Twelve-sided die">
             <span class="die-face d12-face d12-face-1">1</span>
             <span class="die-face d12-face d12-face-2">2</span>
             <span class="die-face d12-face d12-face-3">3</span>
@@ -98,8 +98,8 @@
         </li>
       </template>
       <template id="d20-template">
-        <li class="die" role="group" aria-label="Die">
-          <span class="d20" role="img" aria-label="Twenty-sided die">
+        <li class="die-wrapper" role="group" aria-label="Die">
+          <span class="die d20" role="img" aria-label="Twenty-sided die">
             <span class="die-face d20-face d20-face-1">1</span>
             <span class="die-face d20-face d20-face-2">2</span>
             <span class="die-face d20-face d20-face-3">3</span>
@@ -138,9 +138,11 @@
         <button type="button" data-die="d10">d10</button>
         <button type="button" data-die="d12">d12</button>
         <button type="button" data-die="d20">d20</button>
-        <label for="dice-base">Base</label>
-        <input id="dice-base" type="number" value="0" />
       </fieldset>
+      <div id="dice-modifier">
+        <label for="dice-modifier-input">Modifier</label>
+        <input id="dice-modifier-input" type="number" value="0" min="-9999" max="9999" />
+      </div>
       <div class="dice-actions">
         <button id="dice-roll" type="button" disabled>Roll</button>
         <button id="dice-clear" type="button" disabled>Clear</button>

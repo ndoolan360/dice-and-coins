@@ -59,7 +59,7 @@ function pickNumber() {
 
   const result = Math.floor(Math.random() * (max - min + 1)) + min;
   numberResult.textContent = result;
-  addHistoryEntry(`🔢 ${result} (${min}–${max})`);
+  addHistoryEntry(`🔢 (${min}–${max}): ${result}`);
 }
 
 export function initNumber() {
