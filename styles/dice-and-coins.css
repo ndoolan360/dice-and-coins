@@ -24,6 +24,7 @@
   display: flex;
   flex-flow: column nowrap;
   align-items: stretch;
+  overflow: hidden;
 }
 
 /* ── Buttons ─────────────────────────────────────────────── */
@@ -78,7 +79,8 @@ label {
   margin: 0;
   padding: 0;
   width: 100%;
-  overflow: auto;
+  overflow-y: auto;
+  min-height: 0;
   font-size: 0.9rem;
 }
 
@@ -123,6 +125,8 @@ label {
   gap: 0;
   border-bottom: 1px solid color-mix(in srgb, var(--foreground, #DDD) 30%, transparent);
   flex-shrink: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
 #tabs a {
@@ -134,6 +138,8 @@ label {
   margin-bottom: -1px;
   font-weight: 500;
   transition: color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 #tabs a:hover {
@@ -244,17 +250,25 @@ label {
   align-items: center;
   gap: 0.75rem;
   flex-shrink: 0;
+  width: 100%;
 }
 
 #dice-selector {
   display: flex;
-  flex-flow: row wrap;
-  justify-content: center;
-  align-items: center;
+  flex-flow: row nowrap;
+  justify-content: safe center;
+  align-items: safe center;
   gap: 0.5rem;
   border: none;
   margin: 0;
   padding: 0;
+  overflow-x: auto;
+  min-width: 0;
+  width: 100%;
+}
+
+#dice-selector>* {
+  flex-shrink: 0;
 }
 
 .dice-separator {
@@ -267,8 +281,16 @@ label {
 
 .dice-actions {
   display: flex;
+  flex-wrap: nowrap;
   gap: 0.75rem;
   align-items: center;
+  justify-content: center;
+  overflow-x: auto;
+  width: 100%;
+}
+
+.dice-actions>* {
+  flex-shrink: 0;
 }
 
 #dice-colour {
@@ -866,11 +888,22 @@ label {
 }
 
 #number-controls {
-  display: flex;
-  flex-flow: row wrap;
+  display: grid;
+  grid-template-columns: auto auto auto auto auto;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+}
+
+@media (max-width: 400px) {
+  #number-controls {
+    grid-template-columns: auto auto;
+    justify-items: center;
+  }
+
+  #number-controls button {
+    grid-column: 1 / -1;
+  }
 }
 
 /* ── Utilities ───────────────────────────────────────────── */
