@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 9.510565163">
+  <!-- 10*sqrt(10+2sqrt(5))/4 -->
+  <path
+    d="M 5 0 L 10 3.6327126 L 8.0901699 9.5105652 L 1.9098301 9.5105652 L 0 3.6327126 Z"
+    stroke-width="1"
+    stroke="white"
+    fill="none"
+  />
+</svg>

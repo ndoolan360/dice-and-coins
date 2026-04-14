@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<title>Dice and Coins</title>
+<link rel="stylesheet" href="./styles/dice-and-coins.css" />
+<script defer src="./src/main.js" type="module"></script>
+
+<noscript>You need to enable Javascript to run this app.</noscript>
+
+<details id="history" aria-labelledby="history-summary" aria-describedby="history-help">
+  <summary id="history-summary">History</summary>
+  <button id="history-clear" type="button" aria-label="Clear history">Clear</button>
+  <p id="history-help" class="sr-only">Contains recent dice rolls, coin flips, and number picks.</p>
+  <ul id="history-list" role="log" aria-live="polite" aria-relevant="additions"></ul>
+</details>
+
+<nav id="tabs" aria-label="Tool tabs">
+  <a href="#dice" id="tab-dice">Dice</a>
+  <a href="#coin" id="tab-coin">Coin</a>
+  <a href="#number" id="tab-number">Number</a>
+</nav>
+
+<div id="tab-content">
+
+  <section id="dice" aria-label="Dice roller">
+    <ul id="dice-tray" aria-label="Dice to roll" aria-live="polite">
+      <template id="d4-template">
+        <li class="die" role="group" aria-label="Die">
+          <span class="d4" role="img" aria-label="Four-sided die">
+            <span class="die-face d4-face d4-face-1">1</span>
+            <span class="die-face d4-face d4-face-2">2</span>
+            <span class="die-face d4-face d4-face-3">3</span>
+            <span class="die-face d4-face d4-face-4">4</span>
+          </span>
+          <button type="button" class="die-remove" aria-label="Remove die">×</button>
+        </li>
+      </template>
+      <template id="d6-template">
+        <li class="die" role="group" aria-label="Die">
+          <span class="d6" role="img" aria-label="Six-sided die">
+            <span class="die-face d6-face d6-face-1">1</span>
+            <span class="die-face d6-face d6-face-2">2</span>
+            <span class="die-face d6-face d6-face-3">3</span>
+            <span class="die-face d6-face d6-face-4">4</span>
+            <span class="die-face d6-face d6-face-5">5</span>
+            <span class="die-face d6-face d6-face-6">6</span>
+          </span>
+          <button type="button" class="die-remove" aria-label="Remove die">×</button>
+        </li>
+      </template>
+      <template id="d8-template">
+        <li class="die" role="group" aria-label="Die">
+          <span class="d8" role="img" aria-label="Eight-sided die">
+            <span class="die-face d8-face d8-face-1">1</span>
+            <span class="die-face d8-face d8-face-2">2</span>
+            <span class="die-face d8-face d8-face-3">3</span>
+            <span class="die-face d8-face d8-face-4">4</span>
+            <span class="die-face d8-face d8-face-5">5</span>
+            <span class="die-face d8-face d8-face-6">6</span>
+            <span class="die-face d8-face d8-face-7">7</span>
+            <span class="die-face d8-face d8-face-8">8</span>
+          </span>
+          <button type="button" class="die-remove" aria-label="Remove die">×</button>
+        </li>
+      </template>
+      <template id="d10-template">
+        <li class="die" role="group" aria-label="Die">
+          <span class="d10" role="img" aria-label="Ten-sided die">
+            <span class="die-face d10-face d10-face-1">1</span>
+            <span class="die-face d10-face d10-face-2">2</span>
+            <span class="die-face d10-face d10-face-3">3</span>
+            <span class="die-face d10-face d10-face-4">4</span>
+            <span class="die-face d10-face d10-face-5">5</span>
+            <span class="die-face d10-face d10-face-6">6</span>
+            <span class="die-face d10-face d10-face-7">7</span>
+            <span class="die-face d10-face d10-face-8">8</span>
+            <span class="die-face d10-face d10-face-9">9</span>
+            <span class="die-face d10-face d10-face-10">10</span>
+          </span>
+          <button type="button" class="die-remove" aria-label="Remove die">×</button>
+        </li>
+      </template>
+      <template id="d12-template">
+        <li class="die" role="group" aria-label="Die">
+          <span class="d12" role="img" aria-label="Twelve-sided die">
+            <span class="die-face d12-face d12-face-1">1</span>
+            <span class="die-face d12-face d12-face-2">2</span>
+            <span class="die-face d12-face d12-face-3">3</span>
+            <span class="die-face d12-face d12-face-4">4</span>
+            <span class="die-face d12-face d12-face-5">5</span>
+            <span class="die-face d12-face d12-face-6">6</span>
+            <span class="die-face d12-face d12-face-7">7</span>
+            <span class="die-face d12-face d12-face-8">8</span>
+            <span class="die-face d12-face d12-face-9">9</span>
+            <span class="die-face d12-face d12-face-10">10</span>
+            <span class="die-face d12-face d12-face-11">11</span>
+            <span class="die-face d12-face d12-face-12">12</span>
+          </span>
+          <button type="button" class="die-remove" aria-label="Remove die">×</button>
+        </li>
+      </template>
+      <template id="d20-template">
+        <li class="die" role="group" aria-label="Die">
+          <span class="d20" role="img" aria-label="Twenty-sided die">
+            <span class="die-face d20-face d20-face-1">1</span>
+            <span class="die-face d20-face d20-face-2">2</span>
+            <span class="die-face d20-face d20-face-3">3</span>
+            <span class="die-face d20-face d20-face-4">4</span>
+            <span class="die-face d20-face d20-face-5">5</span>
+            <span class="die-face d20-face d20-face-6">6</span>
+            <span class="die-face d20-face d20-face-7">7</span>
+            <span class="die-face d20-face d20-face-8">8</span>
+            <span class="die-face d20-face d20-face-9">9</span>
+            <span class="die-face d20-face d20-face-10">10</span>
+            <span class="die-face d20-face d20-face-11">11</span>
+            <span class="die-face d20-face d20-face-12">12</span>
+            <span class="die-face d20-face d20-face-13">13</span>
+            <span class="die-face d20-face d20-face-14">14</span>
+            <span class="die-face d20-face d20-face-15">15</span>
+            <span class="die-face d20-face d20-face-16">16</span>
+            <span class="die-face d20-face d20-face-17">17</span>
+            <span class="die-face d20-face d20-face-18">18</span>
+            <span class="die-face d20-face d20-face-19">19</span>
+            <span class="die-face d20-face d20-face-20">20</span>
+          </span>
+          <button type="button" class="die-remove" aria-label="Remove die">×</button>
+        </li>
+      </template>
+    </ul>
+    <output id="dice-result" aria-live="polite" aria-atomic="true" aria-label="Roll result">
+      <span id="dice-sum"> - </span>
+      <span id="dice-breakdown"></span>
+    </output>
+    <form id="dice-controls">
+      <fieldset id="dice-selector">
+        <legend class="sr-only">Add dice</legend>
+        <button type="button" data-die="4">d4</button>
+        <button type="button" data-die="6">d6</button>
+        <button type="button" data-die="8">d8</button>
+        <button type="button" data-die="10">d10</button>
+        <button type="button" data-die="12">d12</button>
+        <button type="button" data-die="20">d20</button>
+      </fieldset>
+      <div class="dice-actions">
+        <button id="dice-roll" type="button" disabled>Roll</button>
+        <button id="dice-clear" type="button" disabled>Clear</button>
+      </div>
+    </form>
+  </section>
+
+  <section id="coin" aria-label="Coin flip">
+    <div id="coin-display" aria-hidden="true">
+      <div id="coin-inner">
+        <div class="coin-face coin-heads">H</div>
+        <div class="coin-face coin-tails">T</div>
+      </div>
+    </div>
+    <output id="coin-result" aria-live="polite" aria-atomic="true"> - </output>
+    <button id="coin-flip" type="button">Flip</button>
+  </section>
+
+  <section id="number" aria-label="Random number picker">
+    <output id="number-result" aria-live="polite" aria-atomic="true" aria-label="Picked number"> - </output>
+    <form id="number-controls">
+      <label for="number-min">Min</label>
+      <input id="number-min" type="number" value="1" min="-999999" max="999999" />
+      <label for="number-max">Max</label>
+      <input id="number-max" type="number" value="100" min="-999999" max="999999" />
+      <button id="number-pick" type="button">Pick</button>
+    </form>
+  </section>
+
+</div>
