@@ -23,9 +23,15 @@ function applyDiceColour(hex) {
   document.documentElement.style.setProperty('--dice-text', getContrastColour(hex));
 }
 
+const DEFAULT_DICE_COLOUR = '#4169e1';
+
 function updateColourParam(hex) {
   const url = new URL(window.location);
-  url.searchParams.set('colour', hex.replace('#', ''));
+  if (hex.toLowerCase() === DEFAULT_DICE_COLOUR) {
+    url.searchParams.delete('colour');
+  } else {
+    url.searchParams.set('colour', hex.replace('#', ''));
+  }
   history.replaceState(null, '', url);
 }
 
