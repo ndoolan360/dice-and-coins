@@ -12,14 +12,18 @@ const VALID_DICE = new Set(['d4', 'd6', 'd8', 'd10', 'd12', 'd20']);
 
 let isRolling = false;
 
-function animateCount(element, target, duration = 600) {
+function animateCount(element, target, duration = 600, onComplete) {
   const start = performance.now();
   function step(now) {
     const elapsed = now - start;
     const progress = Math.min(elapsed / duration, 1);
     const eased = 1 - Math.pow(1 - progress, 3);
     element.textContent = Math.round(eased * target);
-    if (progress < 1) requestAnimationFrame(step);
+    if (progress < 1) {
+      requestAnimationFrame(step);
+    } else {
+      onComplete?.();
+    }
   }
   requestAnimationFrame(step);
 }
@@ -97,8 +101,6 @@ function rollDice() {
     const base = parseInt(diceBase.value, 10) || 0;
     const total = sum + base;
 
-    animateCount(diceSum, total);
-
     const breakdownParts = results.length > 1 ? [...results] : [];
     if (base !== 0) breakdownParts.push(`${base} (base)`);
     diceBreakdown.textContent = breakdownParts.join(' + ');
@@ -112,8 +114,10 @@ function rollDice() {
       addHistoryEntry(`\u{1F3B2} ${description}: ${total}`);
     }
 
-    isRolling = false;
-    updateControls();
+    animateCount(diceSum, total, 600, () => {
+      isRolling = false;
+      updateControls();
+    });
   }, 2050);
 }
 
