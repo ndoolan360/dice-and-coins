@@ -463,6 +463,7 @@ label {
   height: var(--size);
   translate: -50% calc(-100% * sqrt(2) / 2);
   transform-origin: 50% calc(100% * sqrt(2) / 2) 0px;
+  transform: rotateX(var(--rot-x, -35.26deg)) rotateY(var(--rot-y, 0deg)) rotateZ(var(--rot-z, 0deg));
 
   --tilt-angle-1: calc(asin(1 / sqrt(3)));
   --tilt-angle-2: calc(var(--tilt-angle-1) + 180deg);
@@ -522,7 +523,7 @@ label {
   height: var(--size);
   translate: -50% calc(var(--height-adjust) / -2);
   transform-origin: 50% calc(var(--height-adjust) / 2) 0px;
-  transform: rotateX(var(--rot-x, -180deg)) rotateY(var(--rot-y, -108deg)) rotateZ(var(--rot-z, 0deg));
+  transform: rotateX(var(--rot-x, -221.97deg)) rotateY(var(--rot-y, -108deg)) rotateZ(var(--rot-z, 0deg));
 
   --tilt-angle-1: calc(asin(pow(5, -0.25)));
   --tilt-angle-2: calc(var(--tilt-angle-1) + 180deg);
@@ -595,7 +596,7 @@ label {
   --center-y: calc(100% * sqrt(10 + 2 * sqrt(5)) / 4);
   transform-origin: 50% var(--center-y) 0px;
   translate: -50% calc(var(--center-y) * -1);
-  transform: rotateX(var(--rot-x, -120deg)) rotateY(var(--rot-y, 0deg)) rotateZ(var(--rot-z, 0deg));
+  transform: rotateX(var(--rot-x, -90.001deg)) rotateY(var(--rot-y, 0deg)) rotateZ(var(--rot-z, 0deg));
 
   --tilt-angle-1: 90deg;
   --tilt-angle-2: calc(atan(2) + 90deg);
@@ -681,6 +682,7 @@ label {
   --center-y: calc(100% * sqrt(3) / 2);
   transform-origin: 50% var(--center-y) 0px;
   translate: -50% calc(var(--center-y) * -1);
+  transform: rotateX(var(--rot-x, 10.73deg)) rotateY(var(--rot-y, 0deg)) rotateZ(var(--rot-z, 0deg));
 
   --tilt-angle-1: calc(90deg - acos(sqrt((5 + 2 * sqrt(5)) / 15)));
   --tilt-angle-2: calc(-90deg - acos(sqrt((5 - 2 * sqrt(5)) / 15)));
