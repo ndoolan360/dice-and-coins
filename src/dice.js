@@ -136,8 +136,12 @@ function rollDice() {
     const mod = parseInt(diceMod.value, 10) || 0;
     const total = sum + mod;
 
-    const breakdownParts = results.length > 1 ? [...results] : [];
-    if (mod !== 0) breakdownParts.push(mod);
+    let breakdownParts = [];
+    if (results.length > 1) {
+      breakdownParts = [...results];
+    } else if (mod !== 0) {
+      breakdownParts = [results[0], mod];
+    }
     diceBreakdown.textContent = breakdownParts.join(' + ');
 
     const description = aggregateDieTypes(dieTypes);
