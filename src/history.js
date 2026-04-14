@@ -15,6 +15,10 @@ export function addHistoryEntry(text) {
   if (!history.open) {
     requestAnimationFrame(() => history.classList.add('history-notify'));
   }
+
+  const stored = JSON.parse(sessionStorage.getItem('history') ?? '[]');
+  stored.unshift(text);
+  sessionStorage.setItem('history', JSON.stringify(stored));
 }
 
 function onHistoryNotifyEnd(e) {
@@ -26,9 +30,17 @@ function onHistoryNotifyEnd(e) {
 function clearHistory() {
   historyList.innerHTML = '';
   history.classList.remove('history-notify');
+  sessionStorage.removeItem('history');
 }
 
 export function initHistory() {
   history.addEventListener('animationend', onHistoryNotifyEnd);
   historyClear.addEventListener('click', clearHistory);
+
+  const stored = JSON.parse(sessionStorage.getItem('history') ?? '[]');
+  for (const text of stored) {
+    const li = document.createElement('li');
+    li.textContent = text;
+    historyList.append(li);
+  }
 }
