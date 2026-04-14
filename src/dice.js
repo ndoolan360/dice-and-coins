@@ -180,7 +180,6 @@ function aggregateDieTypes(dieTypes, separator = ' + ') {
     acc[type] = (acc[type] || 0) + 1;
     return acc;
   }, {});
-  console.log('Aggregated die counts:', counts);
   return Object.entries(counts)
     .sort((a, b) => parseInt(a[0].slice(1)) - parseInt(b[0].slice(1)))
     .map(([type, count]) => `${count}${type}`)
