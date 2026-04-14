@@ -7,6 +7,8 @@ const diceSum = document.getElementById('dice-sum');
 const diceBreakdown = document.getElementById('dice-breakdown');
 const diceSelector = document.getElementById('dice-selector');
 
+const VALID_DICE = new Set(['d4', 'd6', 'd8', 'd10', 'd12', 'd20']);
+
 let isRolling = false;
 
 function updateControls() {
@@ -15,8 +17,20 @@ function updateControls() {
   diceClear.disabled = isRolling || !hasDice;
 }
 
+function updateDiceParams() {
+  const url = new URL(window.location);
+  const dice = diceTray.querySelectorAll('.die > span');
+  if (dice.length === 0) {
+    url.searchParams.delete('dice');
+  } else {
+    const types = Array.from(dice, (die) => die.classList[0]);
+    url.searchParams.set('dice', aggregateDieTypes(types, '_'));
+  }
+  history.replaceState(null, '', url);
+}
+
 function addDie(sides) {
-  const template = document.getElementById(`d${sides}-template`);
+  const template = document.getElementById(`${sides}-template`);
   if (!template) return;
 
   const clone = template.content.cloneNode(true);
@@ -25,10 +39,12 @@ function addDie(sides) {
   li.querySelector('.die-remove').addEventListener('click', () => {
     li.remove();
     updateControls();
+    updateDiceParams();
   });
 
   diceTray.appendChild(clone);
   updateControls();
+  updateDiceParams();
 }
 
 function rollDice() {
@@ -76,6 +92,7 @@ function clearDice() {
   diceSum.textContent = '???';
   diceBreakdown.textContent = '';
   updateControls();
+  updateDiceParams();
 }
 
 export function initDice() {
@@ -86,16 +103,40 @@ export function initDice() {
   diceRoll.addEventListener('click', rollDice);
   diceClear.addEventListener('click', clearDice);
   updateControls();
+  loadDiceFromParams();
 }
 
-function aggregateDieTypes(dieTypes) {
+function parseDiceParam(param) {
+  const dice = [];
+  for (const group of param.split('_')) {
+    const match = group.match(/^(\d*)(d\d+)$/);
+    if (!match || !VALID_DICE.has(match[2])) continue;
+    const count = match[1] ? parseInt(match[1], 10) : 1;
+    for (let i = 0; i < count; i++) {
+      dice.push(match[2]);
+    }
+  }
+  return dice;
+}
+
+function loadDiceFromParams() {
+  const diceParam = new URL(window.location).searchParams.get('dice');
+  if (!diceParam) return;
+
+  for (const sides of parseDiceParam(diceParam)) {
+    addDie(sides);
+  }
+}
+
+function aggregateDieTypes(dieTypes, separator = ' + ') {
   const counts = dieTypes.reduce((acc, type) => {
     acc[type] = (acc[type] || 0) + 1;
     return acc;
   }, {});
   return Object.entries(counts)
+    .sort((a, b) => parseInt(a[0].slice(1)) - parseInt(b[0].slice(1)))
     .map(([type, count]) => `${count}${type}`)
-    .join(' + ');
+    .join(separator);
 }
 
 const diceRotations = {
