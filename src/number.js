@@ -5,6 +5,8 @@ const numberMin = document.getElementById('number-min');
 const numberMax = document.getElementById('number-max');
 const numberPick = document.getElementById('number-pick');
 
+let isPicking = false;
+
 function updateNumberParams() {
   const url = new URL(window.location);
   const min = parseInt(numberMin.value, 10);
@@ -41,7 +43,13 @@ function loadNumberFromParams() {
   updateNumberParams();
 }
 
+function randomInRange(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 function pickNumber() {
+  if (isPicking) return;
+
   let min = parseInt(numberMin.value, 10);
   let max = parseInt(numberMax.value, 10);
 
@@ -57,9 +65,38 @@ function pickNumber() {
     updateNumberParams();
   }
 
-  const result = Math.floor(Math.random() * (max - min + 1)) + min;
-  numberResult.textContent = result;
-  addHistoryEntry(`🔢 (${min}–${max}): ${result}`);
+  const finalResult = randomInRange(min, max);
+
+  isPicking = true;
+  numberPick.disabled = true;
+
+  const duration = 1000;
+  const startTime = performance.now();
+  let lastSwap = 0;
+
+  function scramble(now) {
+    const elapsed = now - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+
+    // Ease-out
+    const interval = 50 + 150 * (progress * progress);
+
+    if (now - lastSwap >= interval) {
+      lastSwap = now;
+      numberResult.textContent = randomInRange(min, max);
+    }
+
+    if (progress < 1) {
+      requestAnimationFrame(scramble);
+    } else {
+      numberResult.textContent = finalResult;
+      addHistoryEntry(`🔢 (${min}–${max}): ${finalResult}`);
+      isPicking = false;
+      numberPick.disabled = false;
+    }
+  }
+
+  requestAnimationFrame(scramble);
 }
 
 export function initNumber() {
