@@ -139,10 +139,12 @@ function rollDice() {
     let breakdownParts = [];
     if (results.length > 1) {
       breakdownParts = [...results];
+      if (mod !== 0) breakdownParts.push(mod);
     } else if (mod !== 0) {
       breakdownParts = [results[0], mod];
     }
-    diceBreakdown.textContent = breakdownParts.join(' + ');
+    const breakdownContent = breakdownParts.join(' + ').replaceAll('+ -', '- ');
+    diceBreakdown.textContent = breakdownContent;
 
     const description = aggregateDieTypes(dieTypes);
     const rollStr = results.join(' + ');
