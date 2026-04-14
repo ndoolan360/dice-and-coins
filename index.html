@@ -5,17 +5,11 @@
 
 <noscript>You need to enable Javascript to run this app.</noscript>
 
-<details id="history" aria-labelledby="history-summary" aria-describedby="history-help">
-  <summary id="history-summary">History</summary>
-  <button id="history-clear" type="button" aria-label="Clear history">Clear</button>
-  <p id="history-help" class="sr-only">Contains recent dice rolls, coin flips, and number picks.</p>
-  <ul id="history-list" role="log" aria-live="polite" aria-relevant="additions"></ul>
-</details>
-
 <nav id="tabs" aria-label="Tool tabs">
   <a href="#dice" id="tab-dice">Dice</a>
   <a href="#coin" id="tab-coin">Coin</a>
   <a href="#number" id="tab-number">Number</a>
+  <a href="#history" id="tab-history">History</a>
 </nav>
 
 <div id="tab-content">
@@ -172,6 +166,13 @@
       <input id="number-max" type="number" value="100" min="-999999" max="999999" />
       <button id="number-pick" type="button">Pick</button>
     </form>
+  </section>
+
+  <section id="history" aria-label="History">
+    <ul id="history-list" role="log" aria-live="polite" aria-relevant="additions"></ul>
+    <div class="history-actions">
+      <button id="history-clear" type="button">Clear</button>
+    </div>
   </section>
 
 </div>
