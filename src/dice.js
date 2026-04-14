@@ -84,7 +84,7 @@ function rollDice() {
 
     isRolling = false;
     updateControls();
-  }, 650);
+  }, 2050);
 }
 
 function clearDice() {
@@ -214,6 +214,9 @@ const diceRotations = {
   }
 };
 
+const dieRotX = new WeakMap();
+const dieRotY = new WeakMap();
+
 export function gotoRoll(element, facenum) {
   const dieType = element?.classList?.[0];
   if (!dieType || diceRotations[dieType] === undefined) {
@@ -225,7 +228,19 @@ export function gotoRoll(element, facenum) {
   const roll = ((facenum - 1) % max) + 1;
   const rotation = diceRotations[dieType][roll];
 
-  element.style.setProperty('--rot-x', (rotation.x ?? 0) + 'deg');
-  element.style.setProperty('--rot-y', (rotation.y ?? 0) + 'deg');
+  const targetX = rotation.x ?? 0;
+  const currentX = dieRotX.get(element) ?? 0;
+  const extraX = 2 * 360;
+  const newX = currentX + extraX + ((targetX - currentX - extraX) % 360 + 360) % 360;
+  dieRotX.set(element, newX);
+
+  const targetY = rotation.y ?? 0;
+  const currentY = dieRotY.get(element) ?? 0;
+  const extraY = (Math.random() - 0.5) * 360;
+  const newY = currentY + extraY + ((targetY - currentY - extraY) % 360 + 360) % 360;
+  dieRotY.set(element, newY);
+
+  element.style.setProperty('--rot-x', newX + 'deg');
+  element.style.setProperty('--rot-y', newY + 'deg');
   element.style.setProperty('--rot-z', (rotation.z ?? 0) + 'deg');
 }
