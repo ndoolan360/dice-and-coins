@@ -215,10 +215,10 @@ function loadDiceFromParams() {
   if (!diceParam) return;
 
   const { dice, mod } = parseDiceParam(diceParam);
+  if (mod !== 0) diceMod.value = mod;
   for (const sides of dice) {
     addDie(sides);
   }
-  if (mod !== 0) diceMod.value = mod;
 }
 
 function aggregateDieTypes(dieTypes, separator = ' + ') {
