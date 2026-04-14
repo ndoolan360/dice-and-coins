@@ -278,6 +278,34 @@ label {
 .dice-actions {
   display: flex;
   gap: 0.75rem;
+  align-items: center;
+}
+
+#dice-colour {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 1.65625rem;
+  height: 1.65625rem;
+  border-radius: 50%;
+  border: 1px solid var(--foreground, #ddd);
+  padding: 0;
+  cursor: pointer;
+  background: none;
+}
+
+#dice-colour::-webkit-color-swatch-wrapper {
+  padding: 0;
+  border-radius: 50%;
+}
+
+#dice-colour::-webkit-color-swatch {
+  border: none;
+  border-radius: 50%;
+}
+
+#dice-colour::-moz-color-swatch {
+  border: none;
+  border-radius: 50%;
 }
 
 /* ── Die elements ────────────────────────────────────────── */

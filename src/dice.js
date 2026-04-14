@@ -7,6 +7,35 @@ const diceSum = document.getElementById('dice-sum');
 const diceBreakdown = document.getElementById('dice-breakdown');
 const diceSelector = document.getElementById('dice-selector');
 const diceMod = document.getElementById('dice-modifier-input');
+const diceColourInput = document.getElementById('dice-colour');
+
+function getContrastColour(hex) {
+  const r = parseInt(hex.slice(1, 3), 16) / 255;
+  const g = parseInt(hex.slice(3, 5), 16) / 255;
+  const b = parseInt(hex.slice(5, 7), 16) / 255;
+  const toLinear = c => c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+  const lum = 0.2126 * toLinear(r) + 0.7152 * toLinear(g) + 0.0722 * toLinear(b);
+  return lum > 0.179 ? '#000000' : '#ffffff';
+}
+
+function applyDiceColour(hex) {
+  document.documentElement.style.setProperty('--dice-colour', hex);
+  document.documentElement.style.setProperty('--dice-text', getContrastColour(hex));
+}
+
+function updateColourParam(hex) {
+  const url = new URL(window.location);
+  url.searchParams.set('colour', hex.replace('#', ''));
+  history.replaceState(null, '', url);
+}
+
+function loadColourFromParams() {
+  const raw = new URL(window.location).searchParams.get('colour');
+  if (!raw) return;
+  const hex = '#' + raw;
+  diceColourInput.value = hex;
+  applyDiceColour(hex);
+}
 
 const VALID_DICE = new Set(['d4', 'd6', 'd8', 'd10', 'd12', 'd20']);
 
@@ -138,8 +167,13 @@ export function initDice() {
   diceRoll.addEventListener('click', rollDice);
   diceClear.addEventListener('click', clearDice);
   diceMod.addEventListener('input', updateDiceParams);
+  diceColourInput.addEventListener('input', e => {
+    applyDiceColour(e.target.value);
+    updateColourParam(e.target.value);
+  });
   updateControls();
   loadDiceFromParams();
+  loadColourFromParams();
 }
 
 function parseDiceParam(param) {
