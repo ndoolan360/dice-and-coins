@@ -6,5 +6,8 @@
     The x-offset is: 5*sqrt((sqrt(5)-1)/2)
     The y-offset is: 5*(1+(sqrt(5)-1)/2)
   -->
-  <path d="M 3.9307568888 0 7.8615137776 8.0901699437 L 3.9307568888 10 L 0 8.0901699437 Z" stroke-width="1" stroke="white" fill="none" />
+  <path
+    d="M 3.9307568888 0 7.8615137776 8.0901699437 L 3.9307568888 10 L 0 8.0901699437 Z"
+    fill="white"
+  />
 </svg>
