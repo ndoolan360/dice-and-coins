@@ -80,6 +80,7 @@ function updateDiceParams() {
     parts.push(aggregateDieTypes(types, ' '));
   }
   if (mod !== 0) parts.push(String(mod));
+  else diceMod.value = '';
 
   if (parts.length === 0) {
     url.searchParams.delete('dice');
