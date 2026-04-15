@@ -80,6 +80,7 @@ label {
   padding: 0;
   width: 100%;
   overflow-y: auto;
+  overflow-x: hidden;
   min-height: 0;
   font-size: 0.9rem;
 }
@@ -202,6 +203,7 @@ label {
   margin: 0;
   flex: 1 1;
   overflow-y: auto;
+  overflow-x: hidden;
   width: 100%;
   container-type: size;
   position: relative;
@@ -223,9 +225,23 @@ label {
   bottom: -0.5rem;
   align-self: flex-end;
   width: 100%;
-  height: 1.5rem;
-  margin-top: -1.5rem;
+  height: 2rem;
+  margin-top: auto;
+  margin-bottom: -2rem;
   background: linear-gradient(to top, var(--background, #333) 10%, transparent);
+  opacity: 0;
+  animation: tray-gradient-fade linear;
+  animation-timeline: scroll();
+}
+
+@keyframes tray-gradient-fade {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
 }
 
 #dice-result {
@@ -397,7 +413,7 @@ label {
 }
 
 .d4 {
-  --size: 100cqw;
+  --size: 85cqw;
   width: var(--size);
   height: var(--size);
 
