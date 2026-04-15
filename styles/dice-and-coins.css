@@ -307,15 +307,13 @@ label {
 
 #dice-colour::-webkit-color-swatch-wrapper {
   padding: 0;
-  border-radius: 50%;
+  border-radius: 999px;
+  overflow: hidden;
 }
 
-#dice-colour::-webkit-color-swatch {
-  border: none;
-  border-radius: 50%;
-}
-
+#dice-colour::-webkit-color-swatch,
 #dice-colour::-moz-color-swatch {
+  padding: 0;
   border: none;
   border-radius: 50%;
 }
@@ -390,6 +388,11 @@ label {
   backface-visibility: hidden;
 }
 
+[class*="-6"],
+[class*="-9"] {
+  text-decoration: underline;
+}
+
 .d4 {
   --size: 65cqw;
   width: var(--size);
@@ -436,37 +439,31 @@ label {
 
 .d6-face {
   font-size: 20cqw;
+  transform-origin: center;
 }
 
 .d6-face-1 {
-  transform-origin: center;
   transform: translateZ(calc(var(--size) / 2));
 }
 
 .d6-face-2 {
-  transform-origin: center;
   transform: rotateX(270deg) translateZ(calc(var(--size) / 2)) rotateZ(-90deg);
 }
 
 .d6-face-3 {
-  transform-origin: center;
   transform: rotateY(90deg) translateZ(calc(var(--size) / 2)) rotateZ(90deg);
 }
 
 .d6-face-4 {
-  transform-origin: center;
   transform: rotateY(270deg) translateZ(calc(var(--size) / 2)) rotateZ(180deg);
 }
 
 .d6-face-5 {
-  transform-origin: center;
   transform: rotateX(90deg) translateZ(calc(var(--size) / 2)) rotateZ(180deg);
 }
 
 .d6-face-6 {
-  transform-origin: center;
   transform: rotateY(180deg) translateZ(calc(var(--size) / 2)) rotateZ(-90deg);
-  text-decoration: underline;
 }
 
 .d8 {
@@ -486,46 +483,38 @@ label {
   height: calc(100% * sqrt(3) / 2);
   padding: 10cqw 0 0 0;
   mask-image: url(../images/triangular-face.svg);
+  transform-origin: center top;
 }
 
 .d8-face-1 {
-  transform-origin: center top;
   transform: rotateX(var(--tilt-angle-1));
 }
 
 .d8-face-2 {
-  transform-origin: center top;
   transform: rotateY(90deg) translateY(var(--height-adjust)) rotateX(var(--tilt-angle-2));
 }
 
 .d8-face-3 {
-  transform-origin: center top;
   transform: rotateY(270deg) rotateX(var(--tilt-angle-1));
 }
 
 .d8-face-4 {
-  transform-origin: center top;
   transform: rotateY(180deg) translateY(var(--height-adjust)) rotateX(var(--tilt-angle-2));
 }
 
 .d8-face-5 {
-  transform-origin: center top;
   transform: rotateY(180deg) rotateX(var(--tilt-angle-1));
 }
 
 .d8-face-6 {
-  transform-origin: center top;
   transform: rotateY(270deg) translateY(var(--height-adjust)) rotateX(var(--tilt-angle-2));
-  text-decoration: underline;
 }
 
 .d8-face-7 {
-  transform-origin: center top;
   transform: rotateY(90deg) rotateX(var(--tilt-angle-1));
 }
 
 .d8-face-8 {
-  transform-origin: center top;
   transform: translateY(var(--height-adjust)) rotateX(var(--tilt-angle-2));
 }
 
@@ -547,58 +536,48 @@ label {
   padding: 18cqw 0 0 0;
   margin: 0 12.5%;
   mask-image: url(../images/kite-face.svg);
+  transform-origin: center top;
+}
+
+.d10-face-1 {
+  transform: translateY(var(--height-adjust)) rotateY(108deg) rotateX(var(--tilt-angle-2));
 }
 
 .d10-face-2 {
-  transform-origin: center top;
   transform: rotateY(36deg) rotateX(var(--tilt-angle-1));
 }
 
-.d10-face-8 {
-  transform-origin: center top;
-  transform: rotateY(108deg) rotateX(var(--tilt-angle-1));
-}
-
-.d10-face-10 {
-  transform-origin: center top;
-  transform: rotateY(180deg) rotateX(var(--tilt-angle-1));
+.d10-face-3 {
+  transform: translateY(var(--height-adjust)) rotateY(324deg) rotateX(var(--tilt-angle-2));
 }
 
 .d10-face-4 {
-  transform-origin: center top;
   transform: rotateY(252deg) rotateX(var(--tilt-angle-1));
 }
 
+.d10-face-5 {
+  transform: translateY(var(--height-adjust)) rotateY(252deg) rotateX(var(--tilt-angle-2));
+}
+
 .d10-face-6 {
-  transform-origin: center top;
   transform: rotateY(324deg) rotateX(var(--tilt-angle-1));
   text-decoration: underline;
 }
 
 .d10-face-7 {
-  transform-origin: center top;
   transform: translateY(var(--height-adjust)) rotateY(36deg) rotateX(var(--tilt-angle-2));
 }
 
-.d10-face-1 {
-  transform-origin: center top;
-  transform: translateY(var(--height-adjust)) rotateY(108deg) rotateX(var(--tilt-angle-2));
+.d10-face-8 {
+  transform: rotateY(108deg) rotateX(var(--tilt-angle-1));
 }
 
 .d10-face-9 {
-  transform-origin: center top;
   transform: translateY(var(--height-adjust)) rotateY(180deg) rotateX(var(--tilt-angle-2));
-  text-decoration: underline;
 }
 
-.d10-face-5 {
-  transform-origin: center top;
-  transform: translateY(var(--height-adjust)) rotateY(252deg) rotateX(var(--tilt-angle-2));
-}
-
-.d10-face-3 {
-  transform-origin: center top;
-  transform: translateY(var(--height-adjust)) rotateY(324deg) rotateX(var(--tilt-angle-2));
+.d10-face-10 {
+  transform: rotateY(180deg) rotateX(var(--tilt-angle-1));
 }
 
 .d12 {
@@ -623,68 +602,55 @@ label {
   padding: 4cqw 0 0 0;
   font-size: 12cqw;
   mask-image: url(../images/pentagonal-face.svg);
+  transform-origin: center bottom;
 }
 
 .d12-face-1 {
-  transform-origin: center bottom;
   transform: translateY(var(--vertical-adjust)) rotateX(var(--tilt-angle-1)) translateY(var(--horizontal-adjust));
 }
 
+.d12-face-2 {
+  transform: translateY(var(--vertical-adjust)) rotateY(252deg) translateZ(calc(var(--horizontal-adjust) * -1)) rotateX(var(--tilt-angle-2));
+}
+
+.d12-face-3 {
+  transform: translateY(calc(var(--vertical-adjust) * -1)) rotateY(36deg) translateZ(var(--horizontal-adjust)) rotateX(var(--tilt-angle-3));
+}
+
+.d12-face-4 {
+  transform: translateY(var(--vertical-adjust)) rotateY(180deg) translateZ(calc(var(--horizontal-adjust) * -1)) rotateX(var(--tilt-angle-2));
+}
+
 .d12-face-5 {
-  transform-origin: center bottom;
   transform: translateY(var(--vertical-adjust)) rotateY(36deg) translateZ(calc(var(--horizontal-adjust) * -1)) rotateX(var(--tilt-angle-2));
 }
 
 .d12-face-6 {
-  transform-origin: center bottom;
   transform: translateY(var(--vertical-adjust)) rotateY(108deg) translateZ(calc(var(--horizontal-adjust) * -1)) rotateX(var(--tilt-angle-2));
-  text-decoration: underline;
-}
-
-.d12-face-4 {
-  transform-origin: center bottom;
-  transform: translateY(var(--vertical-adjust)) rotateY(180deg) translateZ(calc(var(--horizontal-adjust) * -1)) rotateX(var(--tilt-angle-2));
-}
-
-.d12-face-2 {
-  transform-origin: center bottom;
-  transform: translateY(var(--vertical-adjust)) rotateY(252deg) translateZ(calc(var(--horizontal-adjust) * -1)) rotateX(var(--tilt-angle-2));
-}
-
-.d12-face-10 {
-  transform-origin: center bottom;
-  transform: translateY(var(--vertical-adjust)) rotateY(324deg) translateZ(calc(var(--horizontal-adjust) * -1)) rotateX(var(--tilt-angle-2));
-}
-
-.d12-face-12 {
-  transform-origin: center bottom;
-  transform: translateY(calc(var(--vertical-adjust) * -1)) rotateX(var(--tilt-angle-4)) translateY(var(--horizontal-adjust));
-}
-
-.d12-face-3 {
-  transform-origin: center bottom;
-  transform: translateY(calc(var(--vertical-adjust) * -1)) rotateY(36deg) translateZ(var(--horizontal-adjust)) rotateX(var(--tilt-angle-3));
-}
-
-.d12-face-11 {
-  transform-origin: center bottom;
-  transform: translateY(calc(var(--vertical-adjust) * -1)) rotateY(108deg) translateZ(var(--horizontal-adjust)) rotateX(var(--tilt-angle-3));
 }
 
 .d12-face-7 {
-  transform-origin: center bottom;
   transform: translateY(calc(var(--vertical-adjust) * -1)) rotateY(180deg) translateZ(var(--horizontal-adjust)) rotateX(var(--tilt-angle-3));
 }
 
+.d12-face-8 {
+  transform: translateY(calc(var(--vertical-adjust) * -1)) rotateY(324deg) translateZ(var(--horizontal-adjust)) rotateX(var(--tilt-angle-3));
+}
+
 .d12-face-9 {
-  text-decoration: underline;
-  transform-origin: center bottom;
   transform: translateY(calc(var(--vertical-adjust) * -1)) rotateY(252deg) translateZ(var(--horizontal-adjust)) rotateX(var(--tilt-angle-3));
 }
 
-.d12-face-8 {
-  transform-origin: center bottom;
-  transform: translateY(calc(var(--vertical-adjust) * -1)) rotateY(324deg) translateZ(var(--horizontal-adjust)) rotateX(var(--tilt-angle-3));
+.d12-face-10 {
+  transform: translateY(var(--vertical-adjust)) rotateY(324deg) translateZ(calc(var(--horizontal-adjust) * -1)) rotateX(var(--tilt-angle-2));
+}
+
+.d12-face-11 {
+  transform: translateY(calc(var(--vertical-adjust) * -1)) rotateY(108deg) translateZ(var(--horizontal-adjust)) rotateX(var(--tilt-angle-3));
+}
+
+.d12-face-12 {
+  transform: translateY(calc(var(--vertical-adjust) * -1)) rotateX(var(--tilt-angle-4)) translateY(var(--horizontal-adjust));
 }
 
 .d20 {
@@ -710,107 +676,86 @@ label {
   padding: 8cqw 0 0 0;
   font-size: 10cqw;
   mask-image: url(../images/triangular-face.svg);
+  transform-origin: center bottom;
 }
 
 .d20-face-1 {
-  transform-origin: center bottom;
   transform: rotateY(0deg) translateZ(var(--horizontal-adjust)) translateY(var(--vertical-adjust-2)) rotateX(var(--tilt-angle-3));
 }
 
 .d20-face-2 {
-  transform-origin: center bottom;
   transform: rotateY(216deg) translateZ(var(--horizontal-adjust)) translateY(var(--vertical-adjust-2)) rotateX(var(--tilt-angle-3));
 }
 
 .d20-face-3 {
-  transform-origin: center bottom;
   transform: rotateY(324deg) translateZ(var(--horizontal-adjust)) translateY(var(--vertical-adjust-1)) rotateX(var(--tilt-angle-1));
 }
 
 .d20-face-4 {
-  transform-origin: center bottom;
   transform: rotateY(144deg) translateZ(var(--horizontal-adjust)) translateY(var(--vertical-adjust-2)) rotateX(var(--tilt-angle-4)) rotateY(180deg);
 }
 
 .d20-face-5 {
-  transform-origin: center bottom;
   transform: rotateY(288deg) translateZ(var(--horizontal-adjust)) translateY(var(--vertical-adjust-2)) rotateX(var(--tilt-angle-4)) rotateY(180deg);
 }
 
 .d20-face-6 {
-  transform-origin: center bottom;
   transform: rotateY(36deg) translateZ(var(--horizontal-adjust)) translateY(var(--vertical-adjust-1)) rotateX(var(--tilt-angle-2)) rotateY(180deg);
-  text-decoration: underline;
 }
 
 .d20-face-7 {
-  transform-origin: center bottom;
   transform: rotateY(252deg) translateZ(var(--horizontal-adjust)) translateY(var(--vertical-adjust-1)) rotateX(var(--tilt-angle-2)) rotateY(180deg);
 }
 
 .d20-face-8 {
-  transform-origin: center bottom;
   transform: rotateY(180deg) translateZ(var(--horizontal-adjust)) translateY(var(--vertical-adjust-1)) rotateX(var(--tilt-angle-1));
 }
 
 .d20-face-9 {
-  transform-origin: center bottom;
   transform: rotateY(72deg) translateZ(var(--horizontal-adjust)) translateY(var(--vertical-adjust-2)) rotateX(var(--tilt-angle-3));
-  text-decoration: underline;
 }
 
 .d20-face-10 {
-  transform-origin: center bottom;
   transform: rotateY(108deg) translateZ(var(--horizontal-adjust)) translateY(var(--vertical-adjust-1)) rotateX(var(--tilt-angle-1));
 }
 
 .d20-face-11 {
-  transform-origin: center bottom;
   transform: rotateY(72deg) translateZ(var(--horizontal-adjust)) translateY(var(--vertical-adjust-2)) rotateX(var(--tilt-angle-4)) rotateY(180deg);
 }
 
 .d20-face-12 {
-  transform-origin: center bottom;
   transform: rotateY(324deg) translateZ(var(--horizontal-adjust)) translateY(var(--vertical-adjust-1)) rotateX(var(--tilt-angle-2)) rotateY(180deg);
 }
 
 .d20-face-13 {
-  transform-origin: center bottom;
   transform: rotateY(0deg) translateZ(var(--horizontal-adjust)) translateY(var(--vertical-adjust-2)) rotateX(var(--tilt-angle-4)) rotateY(180deg);
 }
 
 .d20-face-14 {
-  transform-origin: center bottom;
   transform: rotateY(144deg) translateZ(var(--horizontal-adjust)) translateY(var(--vertical-adjust-2)) rotateX(var(--tilt-angle-3));
 }
 
 .d20-face-15 {
-  transform-origin: center bottom;
   transform: rotateY(288deg) translateZ(var(--horizontal-adjust)) translateY(var(--vertical-adjust-2)) rotateX(var(--tilt-angle-3));
 }
 
 .d20-face-16 {
-  transform-origin: center bottom;
   transform: rotateY(252deg) translateZ(var(--horizontal-adjust)) translateY(var(--vertical-adjust-1)) rotateX(var(--tilt-angle-1));
 }
 
 .d20-face-17 {
-  transform-origin: center bottom;
   transform: rotateY(36deg) translateZ(var(--horizontal-adjust)) translateY(var(--vertical-adjust-1)) rotateX(var(--tilt-angle-1));
 }
 
 .d20-face-18 {
-  transform-origin: center bottom;
   transform: rotateY(216deg) translateZ(var(--horizontal-adjust)) translateY(var(--vertical-adjust-2)) rotateX(var(--tilt-angle-4)) rotateY(180deg);
 }
 
 .d20-face-19 {
-  transform-origin: center bottom;
   transform: rotateY(108deg) translateZ(var(--horizontal-adjust)) translateY(var(--vertical-adjust-1)) rotateX(var(--tilt-angle-2)) rotateY(180deg);
 }
 
 .d20-face-20 {
-  transform-origin: center bottom;
   transform: rotateY(180deg) translateZ(var(--horizontal-adjust)) translateY(var(--vertical-adjust-1)) rotateX(var(--tilt-angle-2)) rotateY(180deg);
 }
 
@@ -822,7 +767,7 @@ label {
 }
 
 #coin-display {
-  perspective: 400px;
+  perspective: none;
   width: 120px;
   height: 120px;
   display: flex;
