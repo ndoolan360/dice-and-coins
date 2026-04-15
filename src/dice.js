@@ -103,7 +103,7 @@ function updateDiceParams() {
     parts.push(aggregateDieTypes(types, ' '));
   }
   if (mod !== 0) parts.push(String(mod));
-  else diceMod.value = '';
+  else if (!diceMod.validity.badInput) diceMod.value = '';
 
   if (parts.length === 0) {
     url.searchParams.delete('dice');
