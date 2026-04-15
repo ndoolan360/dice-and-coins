@@ -394,7 +394,7 @@ label {
 }
 
 .d4 {
-  --size: 65cqw;
+  --size: 100cqw;
   width: var(--size);
   height: var(--size);
 
@@ -431,7 +431,7 @@ label {
 }
 
 .d6 {
-  --size: 50cqw;
+  --size: 72.5cqw;
   width: var(--size);
   height: var(--size);
   translate: -50% -50%;
@@ -467,7 +467,7 @@ label {
 }
 
 .d8 {
-  --size: 55cqw;
+  --size: 85cqw;
   width: var(--size);
   height: var(--size);
   translate: -50% calc(-100% * sqrt(2) / 2);
@@ -519,7 +519,7 @@ label {
 }
 
 .d10 {
-  --size: 50cqw;
+  --size: 75cqw;
   width: var(--size);
   height: var(--size);
   translate: -50% calc(var(--height-adjust) / -2);
@@ -581,7 +581,7 @@ label {
 }
 
 .d12 {
-  --size: 36cqw;
+  --size: 60cqw;
   width: var(--size);
   height: var(--size);
   --center-y: calc(100% * sqrt(10 + 2 * sqrt(5)) / 4);
@@ -654,7 +654,7 @@ label {
 }
 
 .d20 {
-  --size: 40cqw;
+  --size: 55cqw;
   width: var(--size);
   height: var(--size);
   --center-y: calc(100% * sqrt(3) / 2);
