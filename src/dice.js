@@ -108,7 +108,7 @@ function updateDiceParams() {
   if (parts.length === 0) {
     url.searchParams.delete('dice');
   } else {
-    url.searchParams.set('dice', parts.join(' '));
+    url.searchParams.set('dice', parts.join(' ').replace(' -', '-'));
   }
   history.replaceState(null, '', url);
 }
@@ -294,7 +294,7 @@ export function initDice() {
 function parseDiceParam(param) {
   const dice = [];
   let mod = 0;
-  const groups = param.split(' ');
+  const groups = param.replace('-', ' -').split(' ').filter(Boolean);
 
   // If the last segment is a plain integer, treat it as the flat mod
   const last = groups[groups.length - 1];
