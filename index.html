@@ -72,6 +72,23 @@
           <button type="button" class="die-remove" aria-label="Remove die">×</button>
         </li>
       </template>
+      <template id="d%-template">
+        <li class="die-wrapper" role="group" aria-label="Die">
+          <span class="die d10" data-type="d%" role="img" aria-label="Percentile die">
+            <span class="face-1">10</span>
+            <span class="face-2">20</span>
+            <span class="face-3">30</span>
+            <span class="face-4">40</span>
+            <span class="face-5">50</span>
+            <span class="face-6">60</span>
+            <span class="face-7">70</span>
+            <span class="face-8">80</span>
+            <span class="face-9">90</span>
+            <span class="face-10">0</span>
+          </span>
+          <button type="button" class="die-remove" aria-label="Remove die">×</button>
+        </li>
+      </template>
       <template id="d12-template">
         <li class="die-wrapper" role="group" aria-label="Die">
           <span class="die d12" role="img" aria-label="Twelve-sided die">
@@ -130,6 +147,7 @@
         <button type="button" data-die="d6">+d6</button>
         <button type="button" data-die="d8">+d8</button>
         <button type="button" data-die="d10">+d10</button>
+        <button type="button" data-die="d%">+d%</button>
         <button type="button" data-die="d12">+d12</button>
         <button type="button" data-die="d20">+d20</button>
         <span class="dice-separator" aria-hidden="true">|</span>

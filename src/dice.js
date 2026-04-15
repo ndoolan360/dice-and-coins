@@ -9,6 +9,11 @@ const diceSelector = document.getElementById('dice-selector');
 const diceMod = document.getElementById('dice-modifier-input');
 const diceColourInput = document.getElementById('dice-colour');
 
+function getDieType(element, { considerOnlyShape = false } = {}) {
+  if (considerOnlyShape) return element?.classList?.[1];
+  return element?.dataset?.type ?? element?.classList?.[1];
+}
+
 function getContrastColour(hex) {
   const r = parseInt(hex.slice(1, 3), 16) / 255;
   const g = parseInt(hex.slice(3, 5), 16) / 255;
@@ -53,7 +58,7 @@ function loadColourFromParams() {
   applyDiceColour(hex);
 }
 
-const VALID_DICE = new Set(['d4', 'd6', 'd8', 'd10', 'd12', 'd20']);
+const VALID_DICE = new Set(['d4', 'd6', 'd8', 'd10', 'd%', 'd12', 'd20']);
 
 let isRolling = false;
 
@@ -86,7 +91,7 @@ function updateDiceParams() {
 
   const parts = [];
   if (dice.length > 0) {
-    const types = Array.from(dice, (die) => die.classList[1]);
+    const types = Array.from(dice, getDieType);
     parts.push(aggregateDieTypes(types, ' '));
   }
   if (mod !== 0) parts.push(String(mod));
@@ -131,13 +136,15 @@ function rollDice() {
   const dieTypes = [];
 
   dice.forEach((die) => {
-    const dieType = die.classList[1];
-    const max = parseInt(dieType.slice(1), 10);
-    const roll = Math.floor(Math.random() * max) + 1;
-    results.push(roll);
+    const dieType = getDieType(die);
+    const max = Object.keys(diceRotations[getDieType(die, { considerOnlyShape: true })]).length;
+    const position = Math.floor(Math.random() * max) + 1;
+    const faceEl = die.querySelector(`.face-${position}`);
+    const faceValue = faceEl != null ? parseInt(faceEl.textContent, 10) : position;
+    results.push(faceValue);
     dieTypes.push(dieType);
-    gotoRoll(die, roll);
-    die.setAttribute('aria-label', `${dieType} showing ${roll}`);
+    gotoRoll(die, position);
+    die.setAttribute('aria-label', `${dieType} showing ${faceValue}`);
   });
 
   const sum = results.reduce((a, b) => a + b, 0);
@@ -211,7 +218,7 @@ function parseDiceParam(param) {
   }
 
   for (const group of groups) {
-    const match = group.match(/^(\d*)(d\d+)$/);
+    const match = group.match(/^(\d*)(d(?:\d+|%))$/);
     if (!match || !VALID_DICE.has(match[2])) continue;
     const count = match[1] ? parseInt(match[1], 10) : 1;
     for (let i = 0; i < count; i++) {
@@ -238,7 +245,7 @@ function aggregateDieTypes(dieTypes, separator = ' + ') {
     return acc;
   }, {});
   return Object.entries(counts)
-    .sort((a, b) => parseInt(a[0].slice(1)) - parseInt(b[0].slice(1)))
+    .sort((a, b) => (a[0] === 'd%' ? 10.5 : parseInt(a[0].slice(1))) - (b[0] === 'd%' ? 10.5 : parseInt(b[0].slice(1))))
     .map(([type, count]) => `${count}${type}`)
     .join(separator);
 }
@@ -322,15 +329,15 @@ const dieRotX = new WeakMap();
 const dieRotY = new WeakMap();
 
 export function gotoRoll(element, facenum) {
-  const dieType = element?.classList?.[1];
-  if (!dieType || diceRotations[dieType] === undefined) {
-    console.warn(`No rotations defined for die type ${dieType}`);
+  const shapeType = getDieType(element, { considerOnlyShape: true });
+  if (!shapeType || diceRotations[shapeType] === undefined) {
+    console.warn(`No rotations defined for die type ${getDieType(element)}`);
     return;
   }
 
-  const max = Number(Math.max(...Object.keys(diceRotations[dieType])));
+  const max = Number(Math.max(...Object.keys(diceRotations[shapeType])));
   const roll = ((facenum - 1) % max) + 1;
-  const rotation = diceRotations[dieType][roll];
+  const rotation = diceRotations[shapeType][roll];
 
   const targetX = rotation.x ?? 0;
   const currentX = dieRotX.get(element) ?? 0;
