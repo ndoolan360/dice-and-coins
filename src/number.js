@@ -66,11 +66,16 @@ function pickNumber() {
   }
 
   const finalResult = randomInRange(min, max);
+  const duration = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--number-scramble-duration')) * 1000;
+
+  if (duration === 0) {
+    numberResult.textContent = finalResult;
+    addHistoryEntry(`🔢 (${min}–${max}): ${finalResult}`);
+    return;
+  }
 
   isPicking = true;
   numberPick.disabled = true;
-
-  const duration = 1000;
   const startTime = performance.now();
   let lastSwap = 0;
 

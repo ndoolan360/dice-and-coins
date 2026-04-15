@@ -2,6 +2,24 @@
   box-sizing: border-box;
 }
 
+:root {
+  --transition-duration: 0.2s;
+  --coin-flip-duration: 1s;
+  --dice-spin-duration: 1.5s;
+  --dice-increment-duration: 0.6s;
+  --number-scramble-duration: 1s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --transition-duration: 0s;
+    --coin-flip-duration: 0s;
+    --dice-spin-duration: 0s;
+    --dice-increment-duration: 0s;
+    --number-scramble-duration: 0s;
+  }
+}
+
 /* ── Layout ─────────────────────────────────────────────── */
 
 :has(>*>#tab-content) {
@@ -111,7 +129,7 @@ label {
 }
 
 .history-item--new {
-  animation: history-flash 600ms ease-out forwards;
+  animation: history-flash var(--dice-increment-duration) ease-out forwards;
 }
 
 .history-actions {
@@ -138,7 +156,7 @@ label {
   border-bottom: 2px solid transparent;
   margin-bottom: -1px;
   font-weight: 500;
-  transition: color 0.15s, border-color 0.15s;
+  transition: color var(--transition-duration), border-color var(--transition-duration);
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -254,7 +272,7 @@ label {
 
 #dice-sum {
   font-size: 3rem;
-  min-height: 3rem;
+  height: 3rem;
   font-weight: 700;
   line-height: 1;
   color: var(--accent, royalblue);
@@ -262,7 +280,7 @@ label {
 
 #dice-breakdown {
   font-size: 0.9rem;
-  min-height: 1.2rem;
+  height: 1.2rem;
   color: color-mix(in srgb, var(--foreground, #DDD) 70%, transparent);
 }
 
@@ -360,7 +378,7 @@ label {
   left: 50%;
   transform-style: preserve-3d;
   transform: rotateX(var(--rot-x, 0deg)) rotateY(var(--rot-y, 0deg)) rotateZ(var(--rot-z, 0deg));
-  transition: transform 1.5s ease;
+  transition: transform var(--dice-spin-duration) ease;
 }
 
 .die-remove {
@@ -378,7 +396,7 @@ label {
   opacity: 0;
   z-index: 1;
   pointer-events: none;
-  transition: opacity 0.15s, pointer-events 0.6s allow-discrete;
+  transition: opacity var(--transition-duration), pointer-events 0.6s allow-discrete;
 }
 
 .die-wrapper:hover .die-remove,
@@ -403,7 +421,7 @@ label {
   opacity: 0;
   z-index: 1;
   pointer-events: none;
-  transition: opacity 0.2s, pointer-events 0.6s allow-discrete;
+  transition: opacity var(--transition-duration), pointer-events 0.6s allow-discrete;
 }
 
 [data-locked="true"] .die-lock,
@@ -433,7 +451,7 @@ label {
   padding: 0.5rem 0.5rem;
   white-space: nowrap;
   pointer-events: none;
-  transition: opacity 0.15s, pointer-events 0.6s allow-discrete;
+  transition: opacity var(--transition-duration), pointer-events 0.6s allow-discrete;
 }
 
 .die-wrapper:hover .die-roll-single,
@@ -893,6 +911,7 @@ label {
 
 #coin-result {
   font-size: 2rem;
+  height: 3rem;
   font-weight: 700;
   text-align: center;
 }

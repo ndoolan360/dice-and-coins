@@ -138,10 +138,13 @@ function addDie(sides) {
 function rollDice() {
   const dice = diceTray.querySelectorAll('.die-wrapper > .die');
   if (dice.length === 0) return;
+  const style = getComputedStyle(document.documentElement);
+  const spinDuration = parseFloat(style.getPropertyValue('--dice-spin-duration')) * 1000;
+  const incrementDuration = parseFloat(style.getPropertyValue('--dice-increment-duration')) * 1000;
 
   isRolling = true;
   updateControls();
-  diceSum.textContent = '…';
+  if (spinDuration > 0) diceSum.textContent = '…';
   diceBreakdown.textContent = '';
 
   const results = [];
@@ -167,7 +170,6 @@ function rollDice() {
 
   const sum = results.reduce((a, b) => a + b, 0);
 
-  // Update display after CSS transition completes
   setTimeout(() => {
     const mod = parseInt(diceMod.value, 10) || 0;
     const total = sum + mod;
@@ -191,18 +193,22 @@ function rollDice() {
       addHistoryEntry(`🎲 ${description}: ${total}`);
     }
 
-    animateCount(diceSum, total, 600, () => {
+    animateCount(diceSum, total, incrementDuration, () => {
       isRolling = false;
       updateControls();
     });
-  }, 1550);
+  }, spinDuration > 0 ? spinDuration + 50 : 0);
 }
 
 function rollSingleDie(wrapper) {
   if (isRolling) return;
+  const style = getComputedStyle(document.documentElement);
+  const spinDuration = parseFloat(style.getPropertyValue('--dice-spin-duration')) * 1000;
+  const incrementDuration = parseFloat(style.getPropertyValue('--dice-increment-duration')) * 1000;
+
   isRolling = true;
   updateControls();
-  diceSum.textContent = '…';
+  if (spinDuration > 0) diceSum.textContent = '…';
   diceBreakdown.textContent = '';
 
   const die = wrapper.querySelector('.die');
@@ -243,11 +249,11 @@ function rollSingleDie(wrapper) {
       addHistoryEntry(`🎲 ${description}: ${total}`);
     }
 
-    animateCount(diceSum, total, 600, () => {
+    animateCount(diceSum, total, incrementDuration, () => {
       isRolling = false;
       updateControls();
     });
-  }, 1550);
+  }, spinDuration > 0 ? spinDuration + 50 : 0);
 }
 
 function clearDice() {
@@ -333,10 +339,10 @@ const diceRotations = {
   },
   "d6": {
     "1": { "x": 0, "y": 0, "z": 0 },
-    "2": { "x": 90.001, "y": 90, "z": 0 },
-    "3": { "x": 90.001, "y": 180, "z": 90 },
+    "2": { "x": 90, "y": 90, "z": 0 },
+    "3": { "x": 90, "y": 180, "z": 90 },
     "4": { "x": 0, "y": -90, "z": 180 },
-    "5": { "x": 90.001, "y": 0, "z": 180 },
+    "5": { "x": 90, "y": 0, "z": 180 },
     "6": { "x": 180, "y": 0, "z": 90 }
   },
   "d8": {
@@ -362,7 +368,7 @@ const diceRotations = {
     "10": { "x": -41.97, "y": -180, "z": 0 }
   },
   "d12": {
-    "1": { "x": -90.001, "y": 0, "z": 0 },
+    "1": { "x": -90, "y": 0, "z": 0 },
     "2": { "x": -153.43, "y": -252, "z": 0 },
     "3": { "x": 26.57, "y": -36, "z": 0 },
     "4": { "x": -153.43, "y": -180, "z": 0 },
@@ -373,7 +379,7 @@ const diceRotations = {
     "9": { "x": 26.57, "y": -252, "z": 0 },
     "10": { "x": -153.43, "y": -324, "z": 0 },
     "11": { "x": 26.57, "y": -108, "z": 0 },
-    "12": { "x": -270.001, "y": 0, "z": 0 }
+    "12": { "x": -270, "y": 0, "z": 0 }
   },
   "d20": {
     "1": { "x": 10.73, "y": 0, "z": 0 },
@@ -425,7 +431,7 @@ export function gotoRoll(element, facenum) {
   const newY = currentY + extraY + ((targetY - currentY - extraY) % 360 + 360) % 360;
   dieRotY.set(element, newY);
 
-  element.style.setProperty('--rot-x', newX + 'deg');
-  element.style.setProperty('--rot-y', newY + 'deg');
-  element.style.setProperty('--rot-z', (rotation.z ?? 0) + 'deg');
+  element.style.setProperty('--rot-x', newX + 0.001 + 'deg');
+  element.style.setProperty('--rot-y', newY + 0.001 + 'deg');
+  element.style.setProperty('--rot-z', (rotation.z ?? 0) + 0.001 + 'deg');
 }
