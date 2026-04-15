@@ -80,9 +80,11 @@ function animateCount(element, target, duration = 600, onComplete) {
 }
 
 function updateControls() {
-  const hasDice = diceTray.querySelector('.die-wrapper') !== null;
+  const dieCount = diceTray.querySelectorAll('.die-wrapper').length;
+  const hasDice = dieCount > 0;
   diceRoll.disabled = isRolling || !hasDice;
   diceClear.disabled = isRolling || !hasDice;
+  diceRoll.textContent = dieCount >= 2 ? 'Roll All' : 'Roll';
 }
 
 function updateDiceParams() {
@@ -119,6 +121,15 @@ function addDie(sides) {
     updateDiceParams();
   });
 
+  li.querySelector('.die-roll-single').addEventListener('click', () => rollSingleDie(li));
+
+  const lockBtn = li.querySelector('.die-lock');
+  lockBtn.addEventListener('click', () => {
+    const locked = li.dataset.locked === 'true';
+    li.dataset.locked = String(!locked);
+    lockBtn.setAttribute('aria-pressed', String(!locked));
+  });
+
   diceTray.appendChild(clone);
   updateControls();
   updateDiceParams();
@@ -137,13 +148,19 @@ function rollDice() {
   const dieTypes = [];
 
   dice.forEach((die) => {
+    const wrapper = die.closest('.die-wrapper');
     const dieType = getDieType(die);
+    dieTypes.push(dieType);
+    if (wrapper?.dataset.locked === 'true') {
+      results.push(parseInt(wrapper.dataset.value ?? '1', 10));
+      return;
+    }
     const max = Object.keys(diceRotations[getDieType(die, { considerOnlyShape: true })]).length;
     const position = Math.floor(Math.random() * max) + 1;
     const faceEl = die.querySelector(`.face-${position}`);
     const faceValue = faceEl != null ? parseInt(faceEl.textContent, 10) : position;
     results.push(faceValue);
-    dieTypes.push(dieType);
+    if (wrapper) wrapper.dataset.value = String(faceValue);
     gotoRoll(die, position);
     die.setAttribute('aria-label', `${dieType} showing ${faceValue}`);
   });
@@ -169,6 +186,58 @@ function rollDice() {
     const rollStr = results.join(' + ');
     const modStr = mod !== 0 ? ` + ${mod}` : '';
     if (results.length > 1 || mod !== 0) {
+      addHistoryEntry(`🎲 ${description}${modStr}: (${rollStr}${modStr}) ${total}`);
+    } else {
+      addHistoryEntry(`🎲 ${description}: ${total}`);
+    }
+
+    animateCount(diceSum, total, 600, () => {
+      isRolling = false;
+      updateControls();
+    });
+  }, 1550);
+}
+
+function rollSingleDie(wrapper) {
+  if (isRolling) return;
+  isRolling = true;
+  updateControls();
+  diceSum.textContent = '…';
+  diceBreakdown.textContent = '';
+
+  const die = wrapper.querySelector('.die');
+  const dieType = getDieType(die);
+  const max = Object.keys(diceRotations[getDieType(die, { considerOnlyShape: true })]).length;
+  const position = Math.floor(Math.random() * max) + 1;
+  const faceEl = die.querySelector(`.face-${position}`);
+  const faceValue = faceEl != null ? parseInt(faceEl.textContent, 10) : position;
+  wrapper.dataset.value = String(faceValue);
+  gotoRoll(die, position);
+  die.setAttribute('aria-label', `${dieType} showing ${faceValue}`);
+
+  setTimeout(() => {
+    const mod = parseInt(diceMod.value, 10) || 0;
+    const allWrappers = Array.from(diceTray.querySelectorAll('.die-wrapper'));
+    const allDice = allWrappers.map(w => w.querySelector('.die'));
+    const allResults = allWrappers.map(w => parseInt(w.dataset.value ?? '1', 10));
+    const allTypes = allDice.map(d => getDieType(d));
+
+    const sum = allResults.reduce((a, b) => a + b, 0);
+    const total = sum + mod;
+
+    let breakdownParts = [];
+    if (allResults.length > 1) {
+      breakdownParts = [...allResults];
+      if (mod !== 0) breakdownParts.push(mod);
+    } else if (mod !== 0) {
+      breakdownParts = [allResults[0], mod];
+    }
+    diceBreakdown.textContent = breakdownParts.join(' + ').replaceAll('+ -', '- ');
+
+    const description = aggregateDieTypes(allTypes);
+    const rollStr = allResults.join(' + ');
+    const modStr = mod !== 0 ? ` + ${mod}` : '';
+    if (allResults.length > 1 || mod !== 0) {
       addHistoryEntry(`🎲 ${description}${modStr}: (${rollStr}${modStr}) ${total}`);
     } else {
       addHistoryEntry(`🎲 ${description}: ${total}`);

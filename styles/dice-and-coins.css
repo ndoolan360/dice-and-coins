@@ -254,6 +254,7 @@ label {
 
 #dice-sum {
   font-size: 3rem;
+  min-height: 3rem;
   font-weight: 700;
   line-height: 1;
   color: var(--accent, royalblue);
@@ -375,13 +376,79 @@ label {
   padding: 0;
   line-height: 1;
   opacity: 0;
-  transition: opacity 0.15s;
   z-index: 1;
+  pointer-events: none;
+  transition: opacity 0.15s, pointer-events 0.6s allow-discrete;
 }
 
 .die-wrapper:hover .die-remove,
 .die-wrapper:focus-within .die-remove {
   opacity: 1;
+  pointer-events: auto;
+}
+
+.die-lock {
+  position: absolute;
+  top: -0.5rem;
+  right: 50%;
+  translate: 50% 0;
+  min-height: 1.25rem;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  width: 1.25rem;
+  border-radius: 50%;
+  font-size: 0.75rem;
+  padding: 0;
+  line-height: 1;
+  opacity: 0;
+  z-index: 1;
+  pointer-events: none;
+  transition: opacity 0.2s, pointer-events 0.6s allow-discrete;
+}
+
+[data-locked="true"] .die-lock,
+[data-locked="true"] .die-lock:hover,
+[data-locked="true"] .die-lock:focus-within {
+  opacity: 0.6;
+  background-color: var(--dice-colour, royalblue);
+  color: var(--dice-text, #fff);
+  border-color: var(--dice-colour, royalblue);
+}
+
+.die-wrapper:hover .die-lock,
+.die-wrapper:focus-within .die-lock {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.die-roll-single {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  z-index: 2;
+  opacity: 0;
+  pointer-events: none;
+  font-size: 1rem;
+  padding: 0.5rem 0.5rem;
+  white-space: nowrap;
+  pointer-events: none;
+  transition: opacity 0.15s, pointer-events 0.6s allow-discrete;
+}
+
+.die-wrapper:hover .die-roll-single,
+.die-wrapper:focus-within .die-roll-single {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+[data-locked="true"] .die>* {
+  background: color-mix(in srgb, var(--dice-colour, royalblue) 25%, var(--background, #333));
+  color: color-mix(in srgb, var(--dice-text, #FFF) 25%, var(--background, #333));
+}
+
+[data-locked="true"] .die-roll-single {
+  display: none;
 }
 
 .d4>*,
