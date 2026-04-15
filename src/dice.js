@@ -5,6 +5,7 @@ const diceRoll = document.getElementById('dice-roll');
 const diceClear = document.getElementById('dice-clear');
 const diceSum = document.getElementById('dice-sum');
 const diceBreakdown = document.getElementById('dice-breakdown');
+const diceControls = document.getElementById('dice-controls');
 const diceSelector = document.getElementById('dice-selector');
 const diceMod = document.getElementById('dice-modifier-input');
 const diceColourInput = document.getElementById('dice-colour');
@@ -195,6 +196,10 @@ export function initDice() {
   });
 
   diceRoll.addEventListener('click', rollDice);
+  diceControls.addEventListener('submit', e => {
+    e.preventDefault();
+    rollDice();
+  });
   diceClear.addEventListener('click', clearDice);
   diceMod.addEventListener('input', updateDiceParams);
   diceColourInput.addEventListener('input', e => {
