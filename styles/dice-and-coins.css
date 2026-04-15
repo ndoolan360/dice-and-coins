@@ -176,6 +176,11 @@ label {
 
 #tab-content>section>:first-child {
   flex: 1 1;
+  min-height: 50%;
+}
+
+#tab-content>section>:not(:first-child) {
+  min-height: 0;
 }
 
 /* Show dice by default, show targeted section */
@@ -228,7 +233,6 @@ label {
   flex-flow: column nowrap;
   align-items: center;
   gap: 0.25rem;
-  min-height: 4.5rem;
   text-align: center;
 }
 
@@ -241,6 +245,7 @@ label {
 
 #dice-breakdown {
   font-size: 0.9rem;
+  min-height: 1.2rem;
   color: color-mix(in srgb, var(--foreground, #DDD) 70%, transparent);
 }
 
@@ -322,10 +327,8 @@ label {
 
 .die-wrapper {
   position: relative;
-  min-width: 10rem;
-  min-height: 10rem;
-  width: 20cqw;
-  height: 20cqw;
+  width: min(30cqw, 30cqh);
+  height: min(30cqw, 30cqh);
   max-width: 40rem;
   max-height: 40rem;
 
@@ -809,7 +812,6 @@ label {
 #coin-result {
   font-size: 2rem;
   font-weight: 700;
-  min-height: 2.5rem;
   text-align: center;
 }
 
