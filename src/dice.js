@@ -64,6 +64,11 @@ const VALID_DICE = new Set(['d4', 'd6', 'd8', 'd10', 'd%', 'd12', 'd20']);
 let isRolling = false;
 
 function animateCount(element, target, duration = 600, onComplete) {
+  if (duration <= 0) {
+    element.textContent = target;
+    onComplete?.();
+    return;
+  }
   const start = performance.now();
   function step(now) {
     const elapsed = now - start;
