@@ -23,7 +23,18 @@ function applyDiceColour(hex) {
   document.documentElement.style.setProperty('--dice-text', getContrastColour(hex));
 }
 
-const DEFAULT_DICE_COLOUR = '#4169e1';
+function resolveColourToHex(colour) {
+  const el = document.createElement('div');
+  el.style.color = colour;
+  document.body.appendChild(el);
+  const rgb = getComputedStyle(el).color;
+  document.body.removeChild(el);
+  const [r, g, b] = rgb.match(/\d+/g).map(Number);
+  return '#' + [r, g, b].map(v => v.toString(16).padStart(2, '0')).join('');
+}
+
+const accentRaw = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
+const DEFAULT_DICE_COLOUR = resolveColourToHex(accentRaw || 'royalblue');
 
 function updateColourParam(hex) {
   const url = new URL(window.location);
@@ -37,8 +48,7 @@ function updateColourParam(hex) {
 
 function loadColourFromParams() {
   const raw = new URL(window.location).searchParams.get('colour');
-  if (!raw) return;
-  const hex = '#' + raw;
+  const hex = raw ? '#' + raw : DEFAULT_DICE_COLOUR;
   diceColourInput.value = hex;
   applyDiceColour(hex);
 }
