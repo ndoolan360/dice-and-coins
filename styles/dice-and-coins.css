@@ -322,8 +322,8 @@ label {
 
 .die-wrapper {
   position: relative;
-  min-width: 5rem;
-  min-height: 5rem;
+  min-width: 10rem;
+  min-height: 10rem;
   width: 20cqw;
   height: 20cqw;
   max-width: 40rem;
