@@ -317,6 +317,7 @@ function loadDiceFromParams() {
   for (const sides of dice) {
     addDie(sides);
   }
+  if (dice.length > 0) rollDice();
 }
 
 function aggregateDieTypes(dieTypes, separator = ' + ') {
