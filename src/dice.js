@@ -140,6 +140,34 @@ function addDie(sides) {
   updateDiceParams();
 }
 
+function showRollResults(results, dieTypes, incrementDuration) {
+  const mod = parseInt(diceMod.value, 10) || 0;
+  const total = results.reduce((a, b) => a + b, 0) + mod;
+
+  let breakdownParts = [];
+  if (results.length > 1) {
+    breakdownParts = [...results];
+    if (mod !== 0) breakdownParts.push(mod);
+  } else if (mod !== 0) {
+    breakdownParts = [results[0], mod];
+  }
+  diceBreakdown.textContent = breakdownParts.join(' + ').replaceAll('+ -', '- ');
+
+  const description = aggregateDieTypes(dieTypes);
+  const rollStr = results.join(' + ');
+  const modStr = mod !== 0 ? ` + ${mod}` : '';
+  if (results.length > 1 || mod !== 0) {
+    addHistoryEntry(`🎲 ${description}${modStr}: (${rollStr}${modStr}) ${total}`);
+  } else {
+    addHistoryEntry(`🎲 ${description}: ${total}`);
+  }
+
+  animateCount(diceSum, total, incrementDuration, () => {
+    isRolling = false;
+    updateControls();
+  });
+}
+
 function rollDice() {
   const dice = diceTray.querySelectorAll('.die-wrapper > .die');
   if (dice.length === 0) return;
@@ -173,35 +201,8 @@ function rollDice() {
     die.setAttribute('aria-label', `${dieType} showing ${faceValue}`);
   });
 
-  const sum = results.reduce((a, b) => a + b, 0);
-
   setTimeout(() => {
-    const mod = parseInt(diceMod.value, 10) || 0;
-    const total = sum + mod;
-
-    let breakdownParts = [];
-    if (results.length > 1) {
-      breakdownParts = [...results];
-      if (mod !== 0) breakdownParts.push(mod);
-    } else if (mod !== 0) {
-      breakdownParts = [results[0], mod];
-    }
-    const breakdownContent = breakdownParts.join(' + ').replaceAll('+ -', '- ');
-    diceBreakdown.textContent = breakdownContent;
-
-    const description = aggregateDieTypes(dieTypes);
-    const rollStr = results.join(' + ');
-    const modStr = mod !== 0 ? ` + ${mod}` : '';
-    if (results.length > 1 || mod !== 0) {
-      addHistoryEntry(`🎲 ${description}${modStr}: (${rollStr}${modStr}) ${total}`);
-    } else {
-      addHistoryEntry(`🎲 ${description}: ${total}`);
-    }
-
-    animateCount(diceSum, total, incrementDuration, () => {
-      isRolling = false;
-      updateControls();
-    });
+    showRollResults(results, dieTypes, incrementDuration);
   }, spinDuration > 0 ? spinDuration + 50 : 0);
 }
 
@@ -227,37 +228,10 @@ function rollSingleDie(wrapper) {
   die.setAttribute('aria-label', `${dieType} showing ${faceValue}`);
 
   setTimeout(() => {
-    const mod = parseInt(diceMod.value, 10) || 0;
     const allWrappers = Array.from(diceTray.querySelectorAll('.die-wrapper'));
-    const allDice = allWrappers.map(w => w.querySelector('.die'));
     const allResults = allWrappers.map(w => parseInt(w.dataset.value ?? '1', 10));
-    const allTypes = allDice.map(d => getDieType(d));
-
-    const sum = allResults.reduce((a, b) => a + b, 0);
-    const total = sum + mod;
-
-    let breakdownParts = [];
-    if (allResults.length > 1) {
-      breakdownParts = [...allResults];
-      if (mod !== 0) breakdownParts.push(mod);
-    } else if (mod !== 0) {
-      breakdownParts = [allResults[0], mod];
-    }
-    diceBreakdown.textContent = breakdownParts.join(' + ').replaceAll('+ -', '- ');
-
-    const description = aggregateDieTypes(allTypes);
-    const rollStr = allResults.join(' + ');
-    const modStr = mod !== 0 ? ` + ${mod}` : '';
-    if (allResults.length > 1 || mod !== 0) {
-      addHistoryEntry(`🎲 ${description}${modStr}: (${rollStr}${modStr}) ${total}`);
-    } else {
-      addHistoryEntry(`🎲 ${description}: ${total}`);
-    }
-
-    animateCount(diceSum, total, incrementDuration, () => {
-      isRolling = false;
-      updateControls();
-    });
+    const allTypes = allWrappers.map(w => getDieType(w.querySelector('.die')));
+    showRollResults(allResults, allTypes, incrementDuration);
   }, spinDuration > 0 ? spinDuration + 50 : 0);
 }
 
@@ -287,14 +261,14 @@ export function initDice() {
     updateColourParam(e.target.value);
   });
   updateControls();
-  loadDiceFromParams();
   loadColourFromParams();
+  loadDiceFromParams();
 }
 
 function parseDiceParam(param) {
   const dice = [];
   let mod = 0;
-  const groups = param.replace('-', ' -').split(' ').filter(Boolean);
+  const groups = param.replaceAll('-', ' -').split(' ').filter(Boolean);
 
   // If the last segment is a plain integer, treat it as the flat mod
   const last = groups[groups.length - 1];

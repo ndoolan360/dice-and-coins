@@ -351,11 +351,12 @@ label {
   overflow: hidden;
 }
 
-#dice-colour::-webkit-color-swatch,
-#dice-colour::-moz-color-swatch {
-  padding: 0;
+#dice-colour::-webkit-color-swatch {
   border: none;
-  border-radius: 50%;
+}
+
+#dice-colour::-moz-color-swatch {
+  border: none;
 }
 
 /* ── Die elements ────────────────────────────────────────── */
@@ -668,7 +669,6 @@ label {
 
 .d10>.face-6 {
   transform: rotateY(324deg) rotateX(var(--tilt-angle-1));
-  text-decoration: underline;
 }
 
 .d10>.face-7 {
@@ -868,22 +868,23 @@ label {
 /* ── Coin section ────────────────────────────────────────── */
 
 #coin {
+  --coin-size: 120px;
   justify-content: center;
   gap: 2rem;
 }
 
 #coin-display {
   perspective: none;
-  width: 120px;
-  height: 120px;
+  width: var(--coin-size);
+  height: var(--coin-size);
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;
 }
 
 #coin-inner {
-  width: 120px;
-  height: 120px;
+  width: var(--coin-size);
+  height: var(--coin-size);
   transform-style: preserve-3d;
   transform: rotateX(0deg);
   position: relative;
@@ -891,8 +892,8 @@ label {
 
 .coin-face {
   position: absolute;
-  width: 120px;
-  height: 120px;
+  width: var(--coin-size);
+  height: var(--coin-size);
   border-radius: 50%;
   display: flex;
   align-items: center;
