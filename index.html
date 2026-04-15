@@ -137,7 +137,7 @@
       </template>
     </ul>
     <output id="dice-result" aria-live="polite" aria-atomic="true" aria-label="Roll result">
-      <span id="dice-sum"> - </span>
+      <span id="dice-sum"></span>
       <span id="dice-breakdown"></span>
     </output>
     <form id="dice-controls">
@@ -171,12 +171,12 @@
         <div class="coin-face coin-tails">T</div>
       </div>
     </div>
-    <output id="coin-result" aria-live="polite" aria-atomic="true"> - </output>
+    <output id="coin-result" aria-live="polite" aria-atomic="true"></output>
     <button id="coin-flip" type="button">Flip</button>
   </section>
 
   <section id="number" aria-label="Random number picker">
-    <output id="number-result" aria-live="polite" aria-atomic="true" aria-label="Picked number"> - </output>
+    <output id="number-result" aria-live="polite" aria-atomic="true" aria-label="Picked number"></output>
     <form id="number-controls">
       <label for="number-min">Min</label>
       <input id="number-min" type="number" value="1" min="-999999" max="999999" />

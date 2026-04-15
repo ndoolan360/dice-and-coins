@@ -130,7 +130,7 @@ function rollDice() {
 
   isRolling = true;
   updateControls();
-  diceSum.textContent = '...';
+  diceSum.textContent = '…';
   diceBreakdown.textContent = '';
 
   const results = [];
@@ -183,7 +183,7 @@ function rollDice() {
 
 function clearDice() {
   diceTray.querySelectorAll('.die-wrapper').forEach((die) => die.remove());
-  diceSum.textContent = '-';
+  diceSum.textContent = '';
   diceBreakdown.textContent = '';
   diceMod.value = '';
   updateControls();

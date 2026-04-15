@@ -21,6 +21,7 @@ function flipCoin() {
   const remainder = totalRotation % 360;
   totalRotation = totalRotation - remainder + targetFace;
 
+  coinResult.textContent = '…';
   coinInner.style.transition = 'transform 0.8s ease-out';
   coinInner.style.transform = `rotateX(${totalRotation}deg)`;
 
