@@ -3,6 +3,7 @@ import { addHistoryEntry } from './history.js';
 const coinInner = document.getElementById('coin-inner');
 const coinResult = document.getElementById('coin-result');
 const coinFlip = document.getElementById('coin-flip');
+const coinDisplay = document.getElementById('coin-display');
 
 let totalRotation = 0;
 
@@ -34,4 +35,5 @@ function flipCoin() {
 
 export function initCoin() {
   coinFlip.addEventListener('click', flipCoin);
+  coinDisplay.addEventListener('click', flipCoin);
 }
