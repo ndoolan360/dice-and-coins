@@ -494,7 +494,7 @@ label {
   left: 50%;
   width: var(--size);
   height: var(--size);
-  translate: -50% calc(-50% - var(--y-adjust));
+  translate: -50% calc(var(--center-y) - 100%);
   transform-style: preserve-3d;
   transform: rotateX(var(--rot-x, 0deg)) rotateY(var(--rot-y, 0deg)) rotateZ(var(--rot-z, 0deg));
   transition: transform var(--dice-spin-duration) ease;
@@ -516,7 +516,8 @@ label {
       color-mix(in srgb, var(--dice-colour, royalblue) 55%, var(--background, #333)));
   color: var(--dice-text, #FFF);
   backface-visibility: hidden;
-  transform: translateY(var(--y-adjust)) var(--rotate, rotate(0)) translateZ(var(--z-adjust));
+  transform: translateY(calc(50% - var(--center-y))) var(--rotate, rotate(0)) translateZ(var(--inradius));
+  transform-origin: 50% var(--center-y) 0px;
 }
 
 [class*="-6"],
@@ -526,14 +527,13 @@ label {
 
 .d4 {
   --size: 85cqw;
-  --y-adjust: -16.5%;
-  --z-adjust: calc(var(--size) * sqrt(6) / 12);
+  --center-y: calc(200% / 3);
+  --inradius: calc(var(--size) * sqrt(6) / 12);
 
   height: calc(var(--size) * sqrt(3) / 2);
 }
 
 .d4>* {
-  transform-origin: 50% calc(200% / 3) 0px;
   padding: 20cqw 0 0 0;
   mask-image: url(../images/triangular-face.svg);
 }
@@ -552,8 +552,8 @@ label {
 
 .d6 {
   --size: 72.5cqw;
-  --y-adjust: 0%;
-  --z-adjust: calc(var(--size) / 2);
+  --center-y: 50%;
+  --inradius: calc(var(--size) / 2);
 
   translate: -50% -50%;
 }
@@ -584,14 +584,13 @@ label {
 
 .d8 {
   --size: 85cqw;
-  --y-adjust: -16.5%;
-  --z-adjust: calc(var(--size) * sqrt(6) / 6);
+  --center-y: calc(200% / 3);
+  --inradius: calc(var(--size) * sqrt(6) / 6);
 
   height: calc(var(--size) * sqrt(3) / 2);
 }
 
 .d8>* {
-  transform-origin: 50% calc(200% / 3) 0px;
   padding: 20cqw 0 0 0;
   mask-image: url(../images/triangular-face.svg);
 }
@@ -627,8 +626,8 @@ label {
 
 .d10 {
   --size: 75cqw;
-  --y-adjust: 0%;
-  --z-adjust: calc(var(--size) * sqrt(var(--phi) * 2) / 4);
+  --center-y: 50%;
+  --inradius: calc(var(--size) * sqrt(var(--phi) * 2) / 4);
 
   --rot-x: calc(-1 * (asin(pow(5, -0.25))));
   --rot-y: -36deg;
@@ -683,74 +682,60 @@ label {
 
 .d12 {
   --size: 60cqw;
-  width: var(--size);
-  height: var(--size);
-  --center-y: calc(100% * sqrt(10 + 2 * sqrt(5)) / 4);
-  transform-origin: 50% var(--center-y) 0px;
-  translate: -50% calc(var(--center-y) * -1);
-  transform: rotateX(var(--rot-x, -90.001deg)) rotateY(var(--rot-y, 0deg)) rotateZ(var(--rot-z, 0deg));
+  --height-to-width-ratio: calc(sqrt(var(--phi) + 2) / 2);
+  --center-y: calc(200% / (var(--phi) * sqrt(5)));
+  --inradius: calc(var(--size) * var(--height-to-width-ratio) * var(--phi) / sqrt(5));
 
-  --tilt-angle-1: 90deg;
-  --tilt-angle-2: calc(atan(2) + 90deg);
-  --tilt-angle-3: calc(atan(2) - 90deg);
-  --tilt-angle-4: 270deg;
-  --vertical-adjust: calc(sqrt(25 + 10 * sqrt(5)) / 10 * -1 * var(--size));
-  --horizontal-adjust: calc(var(--size) * sqrt((5 + sqrt(5)) / 40));
+  height: calc(var(--size) * var(--height-to-width-ratio));
 }
 
 .d12>* {
-  height: calc(100% * sqrt(10 + 2 * sqrt(5)) / 4);
   padding: 5cqw 0 0 0;
   mask-image: url(../images/pentagonal-face.svg);
-  transform-origin: center bottom;
-}
-
-.d12>.face-1 {
-  transform: translateY(var(--vertical-adjust)) rotateX(var(--tilt-angle-1)) translateY(var(--horizontal-adjust));
 }
 
 .d12>.face-2 {
-  transform: translateY(var(--vertical-adjust)) rotateY(252deg) translateZ(calc(var(--horizontal-adjust) * -1)) rotateX(var(--tilt-angle-2));
+  --rotate: rotateZ(36deg) rotateX(calc(atan(2)));
 }
 
 .d12>.face-3 {
-  transform: translateY(calc(var(--vertical-adjust) * -1)) rotateY(36deg) translateZ(var(--horizontal-adjust)) rotateX(var(--tilt-angle-3));
+  --rotate: rotateZ(36deg) rotateX(calc(atan(2) + 180deg));
 }
 
 .d12>.face-4 {
-  transform: translateY(var(--vertical-adjust)) rotateY(180deg) translateZ(calc(var(--horizontal-adjust) * -1)) rotateX(var(--tilt-angle-2));
+  --rotate: rotateZ(108deg) rotateX(calc(atan(2)));
 }
 
 .d12>.face-5 {
-  transform: translateY(var(--vertical-adjust)) rotateY(36deg) translateZ(calc(var(--horizontal-adjust) * -1)) rotateX(var(--tilt-angle-2));
+  --rotate: rotateZ(108deg) rotateX(calc(atan(2) + 180deg));
 }
 
 .d12>.face-6 {
-  transform: translateY(var(--vertical-adjust)) rotateY(108deg) translateZ(calc(var(--horizontal-adjust) * -1)) rotateX(var(--tilt-angle-2));
+  --rotate: rotateZ(180deg) rotateX(calc(atan(2)));
 }
 
 .d12>.face-7 {
-  transform: translateY(calc(var(--vertical-adjust) * -1)) rotateY(180deg) translateZ(var(--horizontal-adjust)) rotateX(var(--tilt-angle-3));
+  --rotate: rotateZ(180deg) rotateX(calc(atan(2) + 180deg));
 }
 
 .d12>.face-8 {
-  transform: translateY(calc(var(--vertical-adjust) * -1)) rotateY(324deg) translateZ(var(--horizontal-adjust)) rotateX(var(--tilt-angle-3));
+  --rotate: rotateZ(252deg) rotateX(calc(atan(2)));
 }
 
 .d12>.face-9 {
-  transform: translateY(calc(var(--vertical-adjust) * -1)) rotateY(252deg) translateZ(var(--horizontal-adjust)) rotateX(var(--tilt-angle-3));
+  --rotate: rotateZ(252deg) rotateX(calc(atan(2) + 180deg));
 }
 
 .d12>.face-10 {
-  transform: translateY(var(--vertical-adjust)) rotateY(324deg) translateZ(calc(var(--horizontal-adjust) * -1)) rotateX(var(--tilt-angle-2));
+  --rotate: rotateZ(324deg) rotateX(calc(atan(2)));
 }
 
 .d12>.face-11 {
-  transform: translateY(calc(var(--vertical-adjust) * -1)) rotateY(108deg) translateZ(var(--horizontal-adjust)) rotateX(var(--tilt-angle-3));
+  --rotate: rotateZ(324deg) rotateX(calc(atan(2) + 180deg));
 }
 
 .d12>.face-12 {
-  transform: translateY(calc(var(--vertical-adjust) * -1)) rotateX(var(--tilt-angle-4)) translateY(var(--horizontal-adjust));
+  --rotate: rotateX(180deg);
 }
 
 .d20 {
