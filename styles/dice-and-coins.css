@@ -920,6 +920,11 @@ label {
   text-align: center;
 }
 
+#coin-result:empty::before {
+  content: "?";
+  color: color-mix(in srgb, var(--foreground, #DDD) 70%, transparent);
+}
+
 /* ── Number section ──────────────────────────────────────── */
 
 #number {
@@ -937,6 +942,11 @@ label {
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;
+}
+
+#number-result:empty::before {
+  content: "?";
+  color: color-mix(in srgb, var(--foreground, #DDD) 70%, transparent);
 }
 
 #number-controls {
