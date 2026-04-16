@@ -361,6 +361,28 @@ label {
   border: none;
 }
 
+/* ── Die debug ---────────────────────────────────────────── */
+
+.debug .die>* {
+  opacity: .2;
+}
+
+.debug .die::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  border-radius: 2.5px;
+  background: red;
+  backface-visibility: visible;
+  transform-style: preserve-3d;
+  transform: rotateZ(calc(var(--rot-z, 0deg) * -1)) rotateY(calc(var(--rot-y, 0deg) * -1)) rotateX(calc(var(--rot-x, 0deg) * -1));
+  transition: transform var(--dice-spin-duration) ease;
+}
+
 /* ── Die elements ────────────────────────────────────────── */
 
 .die-wrapper {
