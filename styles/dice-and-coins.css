@@ -606,7 +606,6 @@ label {
   --rotate: rotateZ(240deg) rotateX(acos(-1/3)) rotateZ(180deg);
 }
 
-
 .d8>.face-8 {
   --rotate: rotateX(180deg);
 }
@@ -614,63 +613,61 @@ label {
 
 .d10 {
   --size: 75cqw;
-  width: var(--size);
-  height: var(--size);
-  translate: -50% calc(var(--height-adjust) / -2);
-  transform-origin: 50% calc(var(--height-adjust) / 2) 0px;
-  transform: rotateX(var(--rot-x, -221.97deg)) rotateY(var(--rot-y, -108deg)) rotateZ(var(--rot-z, 0deg));
+  --y-adjust: 0%;
+  --z-adjust: calc(var(--size) * sqrt(1 + sqrt(5)) / 4);
 
-  --tilt-angle-1: calc(asin(pow(5, -0.25)));
-  --tilt-angle-2: calc(var(--tilt-angle-1) + 180deg);
-  --height-adjust: calc((sqrt(5 + sqrt(5))) / 2 * var(--size));
+  --rot-x: calc(-1 * (asin(pow(5, -0.25))));
+  --rot-y: -36deg;
+
+  width: calc(var(--size) * sqrt((sqrt(5) - 1) / 2));
+  height: var(--size);
+  translate: -50% calc(-50% - var(--y-adjust));
 }
 
 .d10>* {
-  width: calc(100% * sqrt((sqrt(5) - 1) / 2));
-  padding: 20cqw 0 0 0;
-  margin: 0 12.5%;
+  padding: 30cqw 0 0 0;
   mask-image: url(../images/kite-face.svg);
-  transform-origin: center top;
+  transform-origin: 50% 50%;
 }
 
 .d10>.face-1 {
-  transform: translateY(var(--height-adjust)) rotateY(108deg) rotateX(var(--tilt-angle-2));
+  --rotate: rotateY(36deg) rotateX(asin(pow(5, -0.25)));
 }
 
 .d10>.face-2 {
-  transform: rotateY(36deg) rotateX(var(--tilt-angle-1));
+  --rotate: rotateY(108deg) rotateX(asin(pow(5, -0.25)));
 }
 
 .d10>.face-3 {
-  transform: translateY(var(--height-adjust)) rotateY(324deg) rotateX(var(--tilt-angle-2));
+  --rotate: rotateY(180.001deg) rotateX(asin(pow(5, -0.25)));
 }
 
 .d10>.face-4 {
-  transform: rotateY(252deg) rotateX(var(--tilt-angle-1));
+  --rotate: rotateY(252deg) rotateX(asin(pow(5, -0.25)));
 }
 
 .d10>.face-5 {
-  transform: translateY(var(--height-adjust)) rotateY(252deg) rotateX(var(--tilt-angle-2));
+  --rotate: rotateY(324deg) rotateX(asin(pow(5, -0.25)));
 }
 
 .d10>.face-6 {
-  transform: rotateY(324deg) rotateX(var(--tilt-angle-1));
+  --rotate: rotateY(324deg) rotateX(calc(asin(pow(5, -0.25)) + 180deg));
 }
 
 .d10>.face-7 {
-  transform: translateY(var(--height-adjust)) rotateY(36deg) rotateX(var(--tilt-angle-2));
+  --rotate: rotateY(252deg) rotateX(calc(asin(pow(5, -0.25)) + 180deg));
 }
 
 .d10>.face-8 {
-  transform: rotateY(108deg) rotateX(var(--tilt-angle-1));
+  --rotate: rotateY(180.001deg) rotateX(calc(asin(pow(5, -0.25)) + 180deg));
 }
 
 .d10>.face-9 {
-  transform: translateY(var(--height-adjust)) rotateY(180deg) rotateX(var(--tilt-angle-2));
+  --rotate: rotateY(108deg) rotateX(calc(asin(pow(5, -0.25)) + 180deg));
 }
 
 .d10>.face-10 {
-  transform: rotateY(180deg) rotateX(var(--tilt-angle-1));
+  --rotate: rotateY(36deg) rotateX(calc(asin(pow(5, -0.25)) + 180deg));
 }
 
 .d12 {
