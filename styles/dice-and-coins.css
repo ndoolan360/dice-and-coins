@@ -503,13 +503,12 @@ label {
 
 .d4 {
   --size: 85cqw;
+  --y-adjust: -9%;
+  --z-adjust: calc(var(--size) * sqrt(6) / 12);
+
   width: var(--size);
   height: var(--size);
-
-  translate: -50% -50%;
-  transform-origin: 50% calc(100% * sqrt(6) / 4) 0px;
-
-  --height-adjust: calc(var(--size) / 4);
+  translate: -50% calc(-50% - var(--y-adjust));
 }
 
 .d4>* {
@@ -517,29 +516,27 @@ label {
   padding: 20cqw 0 0 0;
   mask-image: url(../images/triangular-face.svg);
   backface-visibility: visible;
-}
-
-.d4>.face-1 {
-  transform: translateZ(var(--height-adjust))
+  transform-origin: 50% calc(200% / 3) 0px;
+  transform: translateY(var(--y-adjust)) var(--rotate, rotate(0)) translateZ(var(--z-adjust));
 }
 
 .d4>.face-2 {
-  transform-origin: bottom right;
-  transform: translateZ(var(--height-adjust)) rotateZ(60deg) rotateX(calc(90deg + asin(1/3)));
+  --rotate: rotateZ(180deg) rotateZ(120deg) rotateX(acos(-1/3));
 }
 
 .d4>.face-3 {
-  transform-origin: bottom left;
-  transform: translateZ(var(--height-adjust)) rotateZ(-60deg) rotateX(calc(90deg + asin(1/3)));
+  --rotate: rotateZ(180deg) rotateZ(240deg) rotateX(acos(-1/3));
 }
 
 .d4>.face-4 {
-  transform-origin: center bottom;
-  transform: translateZ(var(--height-adjust)) rotateZ(180deg) rotateX(calc(180deg - acos(1 / 3)));
+  --rotate: rotateZ(180deg) rotateX(acos(-1/3));
 }
 
 .d6 {
   --size: 72.5cqw;
+  --y-adjust: 0px;
+  --z-adjust: calc(var(--size) / 2);
+
   width: var(--size);
   height: var(--size);
   translate: -50% -50%;
@@ -547,31 +544,27 @@ label {
 
 .d6>* {
   font-size: 27.5cqw;
-  transform-origin: center;
-}
-
-.d6>.face-1 {
-  transform: translateZ(calc(var(--size) / 2));
+  transform: translateY(var(--y-adjust)) var(--rotate, rotate(0)) translateZ(var(--z-adjust));
 }
 
 .d6>.face-2 {
-  transform: rotateX(270deg) translateZ(calc(var(--size) / 2)) rotateZ(-90deg);
+  --rotate: rotateX(270deg) rotateZ(-90deg);
 }
 
 .d6>.face-3 {
-  transform: rotateY(90deg) translateZ(calc(var(--size) / 2)) rotateZ(90deg);
+  --rotate: rotateY(90deg) rotateZ(90deg);
 }
 
 .d6>.face-4 {
-  transform: rotateY(270deg) translateZ(calc(var(--size) / 2)) rotateZ(180deg);
+  --rotate: rotateY(270deg) rotateZ(180deg);
 }
 
 .d6>.face-5 {
-  transform: rotateX(90deg) translateZ(calc(var(--size) / 2)) rotateZ(180deg);
+  --rotate: rotateX(90deg) rotateZ(180deg);
 }
 
 .d6>.face-6 {
-  transform: rotateY(180deg) translateZ(calc(var(--size) / 2)) rotateZ(-90deg);
+  --rotate: rotateY(180deg) rotateZ(-90deg);
 }
 
 .d8 {
