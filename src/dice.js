@@ -311,15 +311,17 @@ function aggregateDieTypes(dieTypes, separator = ' + ') {
 }
 
 const radToDeg = (angle) => angle * (180 / Math.PI);
+const d4Tilt = radToDeg(Math.acos(1 / 3));
+const d8Tilt = radToDeg(Math.acos(-1 / 3));
 const d10Tilt = radToDeg(-Math.asin(Math.pow(5, -0.25)));
 const d12Tilt = radToDeg(Math.atan(2));
 
 const diceRotations = {
   d4: {
     "1": { x: 0, y: 0, z: 0 },
-    "2": { x: radToDeg(Math.acos(1 / 3)), y: 180, z: 120 },
-    "3": { x: radToDeg(Math.acos(1 / 3)), y: 180, z: -120 },
-    "4": { x: radToDeg(Math.acos(1 / 3)), y: 180, z: 0 }
+    "2": { x: d4Tilt, y: 180, z: 120 },
+    "3": { x: d4Tilt, y: 180, z: -120 },
+    "4": { x: d4Tilt, y: 180, z: 0 }
   },
   d6: {
     "1": { x: 0, y: 0, z: 0 },
@@ -353,10 +355,10 @@ const diceRotations = {
   },
   d12: {
     "1": { x: 0, y: 0, z: 0 },
-    "2": { x: -d12Tilt, y: 0, z: 324 },
-    "3": { x: 180 - d12Tilt, y: 0, z: 324 },
-    "4": { x: -d12Tilt, y: 0, z: 252 },
-    "5": { x: 180 - d12Tilt, y: 0, z: 252 },
+    "2": { x: -d12Tilt, y: 0, z: -36 },
+    "3": { x: 180 - d12Tilt, y: 0, z: -36 },
+    "4": { x: -d12Tilt, y: 0, z: -108 },
+    "5": { x: 180 - d12Tilt, y: 0, z: -108 },
     "6": { x: -d12Tilt, y: 0, z: 180 },
     "7": { x: 180 - d12Tilt, y: 0, z: 180 },
     "8": { x: -d12Tilt, y: 0, z: 108 },
