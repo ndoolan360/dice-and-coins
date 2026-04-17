@@ -557,7 +557,7 @@ label {
 }
 
 .d4>.face-3 {
-  --rotate: rotateZ(300deg) rotateX(calc(180deg - var(--dihedral-angle)));
+  --rotate: rotateZ(-60deg) rotateX(calc(180deg - var(--dihedral-angle)));
 }
 
 .d4>.face-4 {
@@ -611,7 +611,7 @@ label {
 }
 
 .d8>.face-3 {
-  --rotate: rotateZ(300deg) rotateX(calc(180deg - var(--dihedral-angle)));
+  --rotate: rotateZ(-60deg) rotateX(calc(180deg - var(--dihedral-angle)));
 }
 
 .d8>.face-4 {
@@ -619,7 +619,7 @@ label {
 }
 
 .d8>.face-5 {
-  --rotate: rotateX(var(--dihedral-angle)) rotateZ(180deg);
+  --rotate: rotateZ(0deg) rotateX(var(--dihedral-angle)) rotateZ(180deg);
 }
 
 .d8>.face-6 {
@@ -627,7 +627,7 @@ label {
 }
 
 .d8>.face-7 {
-  --rotate: rotateZ(240deg) rotateX(var(--dihedral-angle)) rotateZ(180deg);
+  --rotate: rotateZ(-120deg) rotateX(var(--dihedral-angle)) rotateZ(180deg);
 }
 
 .d8>.face-8 {
@@ -661,19 +661,19 @@ label {
 }
 
 .d10>.face-4 {
-  --rotate: rotateY(216deg) rotateX(calc(var(--elevation-angle)));
+  --rotate: rotateY(-144deg) rotateX(calc(var(--elevation-angle)));
 }
 
 .d10>.face-5 {
-  --rotate: rotateY(288deg) rotateX(calc(var(--elevation-angle)));
+  --rotate: rotateY(-72deg) rotateX(calc(var(--elevation-angle)));
 }
 
 .d10>.face-6 {
-  --rotate: rotateY(288deg) rotateX(calc(var(--elevation-angle) + 180deg));
+  --rotate: rotateY(-72deg) rotateX(calc(var(--elevation-angle) + 180deg));
 }
 
 .d10>.face-7 {
-  --rotate: rotateY(216deg) rotateX(calc(var(--elevation-angle) + 180deg));
+  --rotate: rotateY(-144deg) rotateX(calc(var(--elevation-angle) + 180deg));
 }
 
 .d10>.face-8 {
@@ -727,19 +727,19 @@ label {
 }
 
 .d12>.face-8 {
-  --rotate: rotateZ(252deg) rotateX(calc(180deg - var(--dihedral-angle)));
+  --rotate: rotateZ(-108deg) rotateX(calc(180deg - var(--dihedral-angle)));
 }
 
 .d12>.face-9 {
-  --rotate: rotateZ(252deg) rotateX(calc(-1 * var(--dihedral-angle)));
+  --rotate: rotateZ(-108deg) rotateX(calc(-1 * var(--dihedral-angle)));
 }
 
 .d12>.face-10 {
-  --rotate: rotateZ(324deg) rotateX(calc(180deg - var(--dihedral-angle)));
+  --rotate: rotateZ(-36deg) rotateX(calc(180deg - var(--dihedral-angle)));
 }
 
 .d12>.face-11 {
-  --rotate: rotateZ(324deg) rotateX(calc(-1 * var(--dihedral-angle)));
+  --rotate: rotateZ(-36deg) rotateX(calc(-1 * var(--dihedral-angle)));
 }
 
 .d12>.face-12 {

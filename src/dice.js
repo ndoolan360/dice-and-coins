@@ -318,7 +318,7 @@ const diceRotations = {
   d4: {
     "1": { x: 0, y: 0, z: 0 },
     "2": { x: radToDeg(Math.acos(1 / 3)), y: 180, z: 120 },
-    "3": { x: radToDeg(Math.acos(1 / 3)), y: 180, z: 240 },
+    "3": { x: radToDeg(Math.acos(1 / 3)), y: 180, z: -120 },
     "4": { x: radToDeg(Math.acos(1 / 3)), y: 180, z: 0 }
   },
   d6: {
@@ -331,22 +331,22 @@ const diceRotations = {
   },
   d8: {
     "1": { x: 0, y: 0, z: 0 },
-    "2": { x: radToDeg(-Math.acos(1 / 3)), y: 0, z: 300 },
-    "3": { x: radToDeg(-Math.acos(1 / 3)), y: 0, z: 60 },
-    "4": { x: radToDeg(-Math.acos(1 / 3)), y: 0, z: 180 },
-    "5": { x: radToDeg(Math.acos(-1 / 3)), y: 0, z: 180 },
-    "6": { x: radToDeg(Math.acos(-1 / 3)), y: 0, z: 60 },
-    "7": { x: radToDeg(Math.acos(-1 / 3)), y: 0, z: 300 },
+    "2": { x: -d4Tilt, y: 0, z: -60 },
+    "3": { x: -d4Tilt, y: 0, z: 60 },
+    "4": { x: -d4Tilt, y: 0, z: 180 },
+    "5": { x: d8Tilt, y: 0, z: 180 },
+    "6": { x: d8Tilt, y: 0, z: 60 },
+    "7": { x: d8Tilt, y: 0, z: -60 },
     "8": { x: 180, y: 0, z: 0 }
   },
   d10: {
     "1": { x: d10Tilt, y: 0, z: 0 },
     "2": { x: d10Tilt, y: -72, z: 0 },
     "3": { x: d10Tilt, y: -144, z: 0 },
-    "4": { x: d10Tilt, y: -216, z: 0 },
-    "5": { x: d10Tilt, y: -288, z: 0 },
-    "6": { x: d10Tilt - 180, y: -288, z: 0 },
-    "7": { x: d10Tilt - 180, y: -216, z: 0 },
+    "4": { x: d10Tilt, y: 144, z: 0 },
+    "5": { x: d10Tilt, y: 72, z: 0 },
+    "6": { x: d10Tilt - 180, y: 72, z: 0 },
+    "7": { x: d10Tilt - 180, y: 144, z: 0 },
     "8": { x: d10Tilt - 180, y: -144, z: 0 },
     "9": { x: d10Tilt - 180, y: -72, z: 0 },
     "10": { x: d10Tilt - 180, y: 0, z: 0 }
