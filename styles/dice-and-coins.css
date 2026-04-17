@@ -520,6 +520,20 @@ label {
   transform-origin: 50% var(--center-y) 0px;
 }
 
+.d4>*,
+.d8>*,
+.d20>* {
+  mask-image: url(../images/triangular-face.svg);
+}
+
+.d10>* {
+  mask-image: url(../images/kite-face.svg);
+}
+
+.d12>* {
+  mask-image: url(../images/pentagonal-face.svg);
+}
+
 [class*="-6"],
 [class*="-9"] {
   text-decoration: underline;
@@ -535,7 +549,6 @@ label {
 
 .d4>* {
   padding: 20cqw 0 0 0;
-  mask-image: url(../images/triangular-face.svg);
 }
 
 .d4>.face-2 {
@@ -556,10 +569,6 @@ label {
   --inradius: calc(var(--size) / 2);
 
   translate: -50% -50%;
-}
-
-.d6>* {
-  font-size: 27.5cqw;
 }
 
 .d6>.face-2 {
@@ -592,7 +601,6 @@ label {
 
 .d8>* {
   padding: 20cqw 0 0 0;
-  mask-image: url(../images/triangular-face.svg);
 }
 
 .d8>.face-2 {
@@ -637,7 +645,6 @@ label {
 
 .d10>* {
   padding: 30cqw 0 0 0;
-  mask-image: url(../images/kite-face.svg);
 }
 
 .d10>.face-1 {
@@ -691,7 +698,6 @@ label {
 
 .d12>* {
   padding: 5cqw 0 0 0;
-  mask-image: url(../images/pentagonal-face.svg);
 }
 
 .d12>.face-2 {
@@ -760,7 +766,6 @@ label {
   height: calc(100% * sqrt(3) / 2);
   padding: 12.5cqw 0 0 0;
   font-size: 18cqw;
-  mask-image: url(../images/triangular-face.svg);
   transform-origin: center bottom;
 }
 
