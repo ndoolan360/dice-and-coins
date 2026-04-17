@@ -574,23 +574,23 @@ label {
 }
 
 .d6>.face-2 {
-  --rotate: rotateX(270deg) rotateZ(calc(180deg - var(--dihedral-angle)));
+  --rotate: rotateX(calc(-1 * var(--dihedral-angle)));
 }
 
 .d6>.face-3 {
-  --rotate: rotateY(90deg) rotateZ(calc(180deg - var(--dihedral-angle)));
+  --rotate: rotateY(var(--dihedral-angle));
 }
 
 .d6>.face-4 {
-  --rotate: rotateY(270deg) rotateZ(calc(180deg - var(--dihedral-angle)));
+  --rotate: rotateY(calc(-1 * var(--dihedral-angle)));
 }
 
 .d6>.face-5 {
-  --rotate: rotateX(90deg) rotateZ(calc(180deg - var(--dihedral-angle)));
+  --rotate: rotateX(var(--dihedral-angle));
 }
 
 .d6>.face-6 {
-  --rotate: rotateY(180deg) rotateZ(calc(180deg - var(--dihedral-angle)));
+  --rotate: rotateX(180deg);
 }
 
 .d8 {
