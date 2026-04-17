@@ -363,20 +363,25 @@ label {
 
 /* ── Die debug ---────────────────────────────────────────── */
 
+.debug .die-wrapper {
+  border-radius: 50%;
+  outline: 1px solid var(--red, tomato);
+}
+
 .debug .die>* {
-  opacity: .2;
+  opacity: .3;
 }
 
 .debug .die::before {
   content: '';
-  width: 5px;
-  height: 5px;
+  width: 10px;
+  height: 10px;
   position: absolute;
   top: 50%;
   left: 50%;
   translate: -50% -50%;
-  border-radius: 2.5px;
-  background: red;
+  border-radius: 5px;
+  background: var(--red, tomato);
   backface-visibility: visible;
   transform-style: preserve-3d;
   transform: rotateZ(calc(var(--rot-z, 0deg) * -1)) rotateY(calc(var(--rot-y, 0deg) * -1)) rotateX(calc(var(--rot-x, 0deg) * -1));
