@@ -636,9 +636,7 @@ label {
   --size: 75cqw;
   --center-y: 50%;
   --inradius: calc(var(--size) * sqrt(var(--phi) * 2) / 4);
-
-  --rot-x: calc(-1 * (asin(pow(5, -0.25))));
-  --rot-y: -36deg;
+  --rot-x: calc(-1 * (calc(asin(pow(5, -0.25)))));
 
   width: calc(var(--size) / sqrt(var(--phi)));
 }
@@ -648,43 +646,43 @@ label {
 }
 
 .d10>.face-1 {
-  --rotate: rotateY(36deg) rotateX(asin(pow(5, -0.25)));
+  --rotate: rotateX(calc(asin(pow(5, -0.25))));
 }
 
 .d10>.face-2 {
-  --rotate: rotateY(108deg) rotateX(asin(pow(5, -0.25)));
+  --rotate: rotateY(72deg) rotateX(calc(asin(pow(5, -0.25))));
 }
 
 .d10>.face-3 {
-  --rotate: rotateY(180.001deg) rotateX(asin(pow(5, -0.25)));
+  --rotate: rotateY(144deg) rotateX(calc(asin(pow(5, -0.25))));
 }
 
 .d10>.face-4 {
-  --rotate: rotateY(252deg) rotateX(asin(pow(5, -0.25)));
+  --rotate: rotateY(216deg) rotateX(calc(asin(pow(5, -0.25))));
 }
 
 .d10>.face-5 {
-  --rotate: rotateY(324deg) rotateX(asin(pow(5, -0.25)));
+  --rotate: rotateY(288deg) rotateX(calc(asin(pow(5, -0.25))));
 }
 
 .d10>.face-6 {
-  --rotate: rotateY(324deg) rotateX(calc(asin(pow(5, -0.25)) + 180deg));
+  --rotate: rotateY(288deg) rotateX(calc(asin(pow(5, -0.25)) + 180deg));
 }
 
 .d10>.face-7 {
-  --rotate: rotateY(252deg) rotateX(calc(asin(pow(5, -0.25)) + 180deg));
+  --rotate: rotateY(216deg) rotateX(calc(asin(pow(5, -0.25)) + 180deg));
 }
 
 .d10>.face-8 {
-  --rotate: rotateY(180.001deg) rotateX(calc(asin(pow(5, -0.25)) + 180deg));
+  --rotate: rotateY(144deg) rotateX(calc(asin(pow(5, -0.25)) + 180deg));
 }
 
 .d10>.face-9 {
-  --rotate: rotateY(108deg) rotateX(calc(asin(pow(5, -0.25)) + 180deg));
+  --rotate: rotateY(72deg) rotateX(calc(asin(pow(5, -0.25)) + 180deg));
 }
 
 .d10>.face-10 {
-  --rotate: rotateY(36deg) rotateX(calc(asin(pow(5, -0.25)) + 180deg));
+  --rotate: rotateX(calc(asin(pow(5, -0.25)) + 180deg));
 }
 
 .d12 {
