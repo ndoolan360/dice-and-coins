@@ -1,0 +1,306 @@
+.die {
+  width: var(--size);
+  height: var(--size);
+  translate: -50% calc(var(--center-y) - 100%);
+  transform-style: preserve-3d;
+  transform: rotateX(var(--rot-x, 0deg)) rotateY(var(--rot-y, 0deg)) rotateZ(var(--rot-z, 0deg));
+}
+
+.die>* {
+  transform: translateY(calc(50% - var(--center-y))) var(--rotate, rotate(0)) translateZ(var(--inradius));
+  transform-origin: 50% var(--center-y) 0px;
+}
+
+.d4,
+.d8,
+.d20 {
+  height: calc(var(--size) * sqrt(3) / 2);
+
+  &>* {
+    padding: 28.9% 0 0 0;
+    mask-image: url(../images/triangular-face.svg);
+  }
+}
+
+.d10 {
+  width: calc(var(--size) / sqrt(var(--phi)));
+
+  &>* {
+    padding: 15% 0 0 0;
+    mask-image: url(../images/kite-face.svg);
+  }
+}
+
+.d12 {
+  height: calc(var(--size) * (sqrt(var(--phi) + 2) / 2));
+
+  &>* {
+    padding: 10% 0 0 0;
+    mask-image: url(../images/pentagonal-face.svg);
+  }
+}
+
+.d4 {
+  --size: 85cqw;
+  --center-y: calc(200% / 3);
+  --inradius: calc(var(--size) * sqrt(6) / 12);
+  --dihedral-angle: acos(1/3);
+}
+
+.d4>.face-2 {
+  --rotate: rotateZ(60deg) rotateX(calc(180deg - var(--dihedral-angle)));
+}
+
+.d4>.face-3 {
+  --rotate: rotateZ(-60deg) rotateX(calc(180deg - var(--dihedral-angle)));
+}
+
+.d4>.face-4 {
+  --rotate: rotateZ(180deg) rotateX(calc(180deg - var(--dihedral-angle)));
+}
+
+.d6 {
+  --size: 72.5cqw;
+  --center-y: 50%;
+  --inradius: calc(var(--size) / 2);
+  --dihedral-angle: 90deg;
+}
+
+.d6>.face-2 {
+  --rotate: rotateX(calc(0deg - var(--dihedral-angle)));
+}
+
+.d6>.face-3 {
+  --rotate: rotateY(calc(0deg - var(--dihedral-angle)));
+}
+
+.d6>.face-4 {
+  --rotate: rotateY(var(--dihedral-angle));
+}
+
+.d6>.face-5 {
+  --rotate: rotateX(var(--dihedral-angle));
+}
+
+.d6>.face-6 {
+  --rotate: rotateX(180deg);
+}
+
+.d8 {
+  --size: 85cqw;
+  --center-y: calc(200% / 3);
+  --inradius: calc(var(--size) * sqrt(6) / 6);
+  --dihedral-angle: acos(-1 / 3);
+}
+
+.d8>.face-2 {
+  --rotate: rotateZ(60deg) rotateX(calc(180deg - var(--dihedral-angle)));
+}
+
+.d8>.face-3 {
+  --rotate: rotateZ(-60deg) rotateX(calc(180deg - var(--dihedral-angle)));
+}
+
+.d8>.face-4 {
+  --rotate: rotateZ(180deg) rotateX(calc(180deg - var(--dihedral-angle)));
+}
+
+.d8>.face-5 {
+  --rotate: rotateZ(0deg) rotateX(var(--dihedral-angle)) rotateZ(180deg);
+}
+
+.d8>.face-6 {
+  --rotate: rotateZ(120deg) rotateX(var(--dihedral-angle)) rotateZ(180deg);
+}
+
+.d8>.face-7 {
+  --rotate: rotateZ(-120deg) rotateX(var(--dihedral-angle)) rotateZ(180deg);
+}
+
+.d8>.face-8 {
+  --rotate: rotateX(180deg);
+}
+
+.d10 {
+  --size: 75cqw;
+  --center-y: 50%;
+  --inradius: calc(var(--size) * sqrt(var(--phi) * 2) / 4);
+  --elevation-angle: acos(sqrt(2 / (var(--phi) + 2)));
+  --rot-x: calc(-1 * var(--elevation-angle));
+}
+
+.d10>.face-1 {
+  --rotate: rotateX(calc(var(--elevation-angle)));
+}
+
+.d10>.face-2 {
+  --rotate: rotateY(72deg) rotateX(calc(var(--elevation-angle)));
+}
+
+.d10>.face-3 {
+  --rotate: rotateY(144deg) rotateX(calc(var(--elevation-angle)));
+}
+
+.d10>.face-4 {
+  --rotate: rotateY(-144deg) rotateX(calc(var(--elevation-angle)));
+}
+
+.d10>.face-5 {
+  --rotate: rotateY(-72deg) rotateX(calc(var(--elevation-angle)));
+}
+
+.d10>.face-6 {
+  --rotate: rotateY(-72deg) rotateX(calc(var(--elevation-angle) + 180deg));
+}
+
+.d10>.face-7 {
+  --rotate: rotateY(-144deg) rotateX(calc(var(--elevation-angle) + 180deg));
+}
+
+.d10>.face-8 {
+  --rotate: rotateY(144deg) rotateX(calc(var(--elevation-angle) + 180deg));
+}
+
+.d10>.face-9 {
+  --rotate: rotateY(72deg) rotateX(calc(var(--elevation-angle) + 180deg));
+}
+
+.d10>.face-10 {
+  --rotate: rotateX(calc(var(--elevation-angle) + 180deg));
+}
+
+.d12 {
+  --size: 60cqw;
+  --center-y: calc(200% / (var(--phi) * sqrt(5)));
+  --inradius: calc(var(--size) * ((sqrt(5 * var(--phi) + 10) * var(--phi)) / 10));
+  --dihedral-angle: acos(-1 / sqrt(5));
+}
+
+.d12>.face-2 {
+  --rotate: rotateZ(36deg) rotateX(calc(180deg - var(--dihedral-angle)));
+}
+
+.d12>.face-3 {
+  --rotate: rotateZ(36deg) rotateX(calc(0deg - var(--dihedral-angle)));
+}
+
+.d12>.face-4 {
+  --rotate: rotateZ(108deg) rotateX(calc(180deg - var(--dihedral-angle)));
+}
+
+.d12>.face-5 {
+  --rotate: rotateZ(108deg) rotateX(calc(0deg - var(--dihedral-angle)));
+}
+
+.d12>.face-6 {
+  --rotate: rotateZ(180deg) rotateX(calc(180deg - var(--dihedral-angle)));
+}
+
+.d12>.face-7 {
+  --rotate: rotateZ(180deg) rotateX(calc(0deg - var(--dihedral-angle)));
+}
+
+.d12>.face-8 {
+  --rotate: rotateZ(-108deg) rotateX(calc(180deg - var(--dihedral-angle)));
+}
+
+.d12>.face-9 {
+  --rotate: rotateZ(-108deg) rotateX(calc(0deg - var(--dihedral-angle)));
+}
+
+.d12>.face-10 {
+  --rotate: rotateZ(-36deg) rotateX(calc(180deg - var(--dihedral-angle)));
+}
+
+.d12>.face-11 {
+  --rotate: rotateZ(-36deg) rotateX(calc(0deg - var(--dihedral-angle)));
+}
+
+.d12>.face-12 {
+  --rotate: rotateX(180deg);
+}
+
+.d20 {
+  --size: 55cqw;
+  --center-y: calc(200% / 3);
+  --inradius: calc(var(--size) * pow(var(--phi), 2) / (2 * sqrt(3)));
+  --dihedral-angle: acos(-1 * sqrt(5) / 3);
+  --tetrahedral-angle: acos(1 / 3);
+  --tetrahedral-skew: acos(sqrt(5 / 8));
+}
+
+.d20>.face-2 {
+  --rotate: rotateZ(60deg) rotateX(calc(0deg - var(--dihedral-angle)));
+}
+
+.d20>.face-3 {
+  --rotate: rotateZ(calc(60deg - var(--tetrahedral-skew))) rotateX(var(--tetrahedral-angle)) rotateZ(calc(0deg - var(--tetrahedral-skew)));
+}
+
+.d20>.face-4 {
+  --rotate: rotateZ(calc(120deg + var(--tetrahedral-skew))) rotateX(calc(180deg - var(--tetrahedral-angle))) rotateZ(calc(180deg - var(--tetrahedral-skew)));
+}
+
+.d20>.face-5 {
+  --rotate: rotateZ(calc(180deg - var(--tetrahedral-skew))) rotateX(var(--tetrahedral-angle)) rotateZ(calc(0deg - var(--tetrahedral-skew)));
+}
+
+.d20>.face-6 {
+  --rotate: rotateZ(calc(120deg - var(--tetrahedral-skew))) rotateX(calc(180deg - var(--tetrahedral-angle))) rotateZ(calc(180deg + var(--tetrahedral-skew)));
+}
+
+.d20>.face-7 {
+  --rotate: rotateZ(-60deg) rotateX(calc(180deg - var(--dihedral-angle)));
+}
+
+.d20>.face-8 {
+  --rotate: rotateZ(180deg) rotateX(calc(0deg - var(--dihedral-angle)));
+}
+
+.d20>.face-9 {
+  --rotate: rotateZ(calc(60deg + var(--tetrahedral-skew))) rotateX(var(--tetrahedral-angle)) rotateZ(var(--tetrahedral-skew));
+}
+
+.d20>.face-10 {
+  --rotate: rotateZ(var(--tetrahedral-skew)) rotateX(calc(180deg - var(--tetrahedral-angle))) rotateZ(calc(180deg - var(--tetrahedral-skew)));
+}
+
+.d20>.face-11 {
+  --rotate: rotateZ(calc(180deg + var(--tetrahedral-skew))) rotateX(var(--tetrahedral-angle)) rotateZ(var(--tetrahedral-skew));
+}
+
+.d20>.face-12 {
+  --rotate: rotateZ(calc(-120deg + var(--tetrahedral-skew))) rotateX(calc(180deg - var(--tetrahedral-angle))) rotateZ(calc(180deg - var(--tetrahedral-skew)));
+}
+
+.d20>.face-13 {
+  --rotate: rotateZ(180deg) rotateX(calc(180deg - var(--dihedral-angle)));
+}
+
+.d20>.face-14 {
+  --rotate: rotateZ(-60deg) rotateX(calc(0deg - var(--dihedral-angle)));
+}
+
+.d20>.face-15 {
+  --rotate: rotateZ(calc(-60deg - var(--tetrahedral-skew))) rotateX(var(--tetrahedral-angle)) rotateZ(calc(0deg - var(--tetrahedral-skew)));
+}
+
+.d20>.face-16 {
+  --rotate: rotateZ(calc(0deg - var(--tetrahedral-skew))) rotateX(calc(180deg - var(--tetrahedral-angle))) rotateZ(calc(180deg + var(--tetrahedral-skew)));
+}
+
+.d20>.face-17 {
+  --rotate: rotateZ(calc(-60deg + var(--tetrahedral-skew))) rotateX(var(--tetrahedral-angle)) rotateZ(var(--tetrahedral-skew));
+}
+
+.d20>.face-18 {
+  --rotate: rotateZ(calc(-120deg - var(--tetrahedral-skew))) rotateX(calc(180deg - var(--tetrahedral-angle))) rotateZ(calc(180deg + var(--tetrahedral-skew)));
+}
+
+.d20>.face-19 {
+  --rotate: rotateZ(60deg) rotateX(calc(180deg - var(--dihedral-angle)));
+}
+
+.d20>.face-20 {
+  --rotate: rotateX(180deg);
+}

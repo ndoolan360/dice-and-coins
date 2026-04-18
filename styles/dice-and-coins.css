@@ -250,6 +250,7 @@ label {
   margin-bottom: -2rem;
   background: linear-gradient(to top, var(--background, #333) 10%, transparent);
   opacity: 0;
+  pointer-events: none;
   animation: tray-gradient-fade linear;
   animation-timeline: scroll();
 }
@@ -361,33 +362,6 @@ label {
   border: none;
 }
 
-/* ── Die debug ---────────────────────────────────────────── */
-
-.debug .die-wrapper {
-  border-radius: 50%;
-  outline: 1px solid var(--red, tomato);
-}
-
-.debug .die>* {
-  opacity: .3;
-}
-
-.debug .die::before {
-  content: '';
-  width: 10px;
-  height: 10px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  translate: -50% -50%;
-  border-radius: 5px;
-  background: var(--red, tomato);
-  backface-visibility: visible;
-  transform-style: preserve-3d;
-  transform: rotateZ(calc(var(--rot-z, 0deg) * -1)) rotateY(calc(var(--rot-y, 0deg) * -1)) rotateX(calc(var(--rot-x, 0deg) * -1));
-  transition: transform var(--dice-spin-duration) ease;
-}
-
 /* ── Die elements ────────────────────────────────────────── */
 
 .die-wrapper {
@@ -497,46 +471,22 @@ label {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: var(--size);
-  height: var(--size);
-  translate: -50% calc(var(--center-y) - 100%);
-  transform-style: preserve-3d;
-  transform: rotateX(var(--rot-x, 0deg)) rotateY(var(--rot-y, 0deg)) rotateZ(var(--rot-z, 0deg));
   transition: transform var(--dice-spin-duration) ease;
+  font-size: 22.5cqh;
+  font-weight: 700;
 }
 
 .die>* {
   position: absolute;
   width: 100%;
   height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  font-size: 22.5cqw;
-  line-height: 25cqw;
-  font-weight: 700;
-  background: radial-gradient(circle at 35% 35%,
+  display: grid;
+  place-items: center;
+  background: radial-gradient(circle at 50% var(--center-y),
       var(--dice-colour, royalblue),
       color-mix(in srgb, var(--dice-colour, royalblue) 55%, var(--background, #333)));
   color: var(--dice-text, #FFF);
   backface-visibility: hidden;
-  transform: translateY(calc(50% - var(--center-y))) var(--rotate, rotate(0)) translateZ(var(--inradius));
-  transform-origin: 50% var(--center-y) 0px;
-}
-
-.d4>*,
-.d8>*,
-.d20>* {
-  mask-image: url(../images/triangular-face.svg);
-}
-
-.d10>* {
-  mask-image: url(../images/kite-face.svg);
-}
-
-.d12>* {
-  mask-image: url(../images/pentagonal-face.svg);
 }
 
 [class*="-6"],
@@ -544,316 +494,8 @@ label {
   text-decoration: underline;
 }
 
-.d4 {
-  --size: 85cqw;
-  --center-y: calc(200% / 3);
-  --inradius: calc(var(--size) * sqrt(6) / 12);
-  --dihedral-angle: acos(1/3);
-
-  height: calc(var(--size) * sqrt(3) / 2);
-}
-
-.d4>* {
-  padding: 20cqw 0 0 0;
-}
-
-.d4>.face-2 {
-  --rotate: rotateZ(60deg) rotateX(calc(180deg - var(--dihedral-angle)));
-}
-
-.d4>.face-3 {
-  --rotate: rotateZ(-60deg) rotateX(calc(180deg - var(--dihedral-angle)));
-}
-
-.d4>.face-4 {
-  --rotate: rotateZ(180deg) rotateX(calc(180deg - var(--dihedral-angle)));
-}
-
-.d6 {
-  --size: 72.5cqw;
-  --center-y: 50%;
-  --inradius: calc(var(--size) / 2);
-  --dihedral-angle: 90deg;
-
-  translate: -50% -50%;
-}
-
-.d6>.face-2 {
-  --rotate: rotateX(calc(-1 * var(--dihedral-angle)));
-}
-
-.d6>.face-3 {
-  --rotate: rotateY(var(--dihedral-angle));
-}
-
-.d6>.face-4 {
-  --rotate: rotateY(calc(-1 * var(--dihedral-angle)));
-}
-
-.d6>.face-5 {
-  --rotate: rotateX(var(--dihedral-angle));
-}
-
-.d6>.face-6 {
-  --rotate: rotateX(180deg);
-}
-
-.d8 {
-  --size: 85cqw;
-  --center-y: calc(200% / 3);
-  --inradius: calc(var(--size) * sqrt(6) / 6);
-  --dihedral-angle: calc(acos(-1 / 3));
-
-  height: calc(var(--size) * sqrt(3) / 2);
-}
-
-.d8>* {
-  padding: 20cqw 0 0 0;
-}
-
-.d8>.face-2 {
-  --rotate: rotateZ(60deg) rotateX(calc(180deg - var(--dihedral-angle)));
-}
-
-.d8>.face-3 {
-  --rotate: rotateZ(-60deg) rotateX(calc(180deg - var(--dihedral-angle)));
-}
-
-.d8>.face-4 {
-  --rotate: rotateZ(180deg) rotateX(calc(180deg - var(--dihedral-angle)));
-}
-
-.d8>.face-5 {
-  --rotate: rotateZ(0deg) rotateX(var(--dihedral-angle)) rotateZ(180deg);
-}
-
-.d8>.face-6 {
-  --rotate: rotateZ(120deg) rotateX(var(--dihedral-angle)) rotateZ(180deg);
-}
-
-.d8>.face-7 {
-  --rotate: rotateZ(-120deg) rotateX(var(--dihedral-angle)) rotateZ(180deg);
-}
-
-.d8>.face-8 {
-  --rotate: rotateX(180deg);
-}
-
-.d10 {
-  --size: 75cqw;
-  --center-y: 50%;
-  --inradius: calc(var(--size) * sqrt(var(--phi) * 2) / 4);
-  --elevation-angle: calc(atan(sqrt(var(--phi) / 2)));
-  --rot-x: calc(-1 * var(--elevation-angle));
-
-  width: calc(var(--size) / sqrt(var(--phi)));
-}
-
-.d10>* {
-  padding: 30cqw 0 0 0;
-}
-
-.d10>.face-1 {
-  --rotate: rotateX(calc(var(--elevation-angle)));
-}
-
-.d10>.face-2 {
-  --rotate: rotateY(72deg) rotateX(calc(var(--elevation-angle)));
-}
-
-.d10>.face-3 {
-  --rotate: rotateY(144deg) rotateX(calc(var(--elevation-angle)));
-}
-
-.d10>.face-4 {
-  --rotate: rotateY(-144deg) rotateX(calc(var(--elevation-angle)));
-}
-
-.d10>.face-5 {
-  --rotate: rotateY(-72deg) rotateX(calc(var(--elevation-angle)));
-}
-
-.d10>.face-6 {
-  --rotate: rotateY(-72deg) rotateX(calc(var(--elevation-angle) + 180deg));
-}
-
-.d10>.face-7 {
-  --rotate: rotateY(-144deg) rotateX(calc(var(--elevation-angle) + 180deg));
-}
-
-.d10>.face-8 {
-  --rotate: rotateY(144deg) rotateX(calc(var(--elevation-angle) + 180deg));
-}
-
-.d10>.face-9 {
-  --rotate: rotateY(72deg) rotateX(calc(var(--elevation-angle) + 180deg));
-}
-
-.d10>.face-10 {
-  --rotate: rotateX(calc(var(--elevation-angle) + 180deg));
-}
-
-.d12 {
-  --size: 60cqw;
-  --height-to-width-ratio: calc(sqrt(var(--phi) + 2) / 2);
-  --center-y: calc(200% / (var(--phi) * sqrt(5)));
-  --inradius: calc(var(--size) * var(--height-to-width-ratio) * var(--phi) / sqrt(5));
-  --dihedral-angle: calc(2 * atan(var(--phi)));
-
-  height: calc(var(--size) * var(--height-to-width-ratio));
-}
-
-.d12>* {
-  padding: 5cqw 0 0 0;
-}
-
-.d12>.face-2 {
-  --rotate: rotateZ(36deg) rotateX(calc(180deg - var(--dihedral-angle)));
-}
-
-.d12>.face-3 {
-  --rotate: rotateZ(36deg) rotateX(calc(-1 * var(--dihedral-angle)));
-}
-
-.d12>.face-4 {
-  --rotate: rotateZ(108deg) rotateX(calc(180deg - var(--dihedral-angle)));
-}
-
-.d12>.face-5 {
-  --rotate: rotateZ(108deg) rotateX(calc(-1 * var(--dihedral-angle)));
-}
-
-.d12>.face-6 {
-  --rotate: rotateZ(180deg) rotateX(calc(180deg - var(--dihedral-angle)));
-}
-
-.d12>.face-7 {
-  --rotate: rotateZ(180deg) rotateX(calc(-1 * var(--dihedral-angle)));
-}
-
-.d12>.face-8 {
-  --rotate: rotateZ(-108deg) rotateX(calc(180deg - var(--dihedral-angle)));
-}
-
-.d12>.face-9 {
-  --rotate: rotateZ(-108deg) rotateX(calc(-1 * var(--dihedral-angle)));
-}
-
-.d12>.face-10 {
-  --rotate: rotateZ(-36deg) rotateX(calc(180deg - var(--dihedral-angle)));
-}
-
-.d12>.face-11 {
-  --rotate: rotateZ(-36deg) rotateX(calc(-1 * var(--dihedral-angle)));
-}
-
-.d12>.face-12 {
-  --rotate: rotateX(180deg);
-}
-
 .d20 {
-  --size: 55cqw;
-  width: var(--size);
-  height: var(--size);
-  --center-y: calc(100% * sqrt(3) / 2);
-  transform-origin: 50% var(--center-y) 0px;
-  translate: -50% calc(var(--center-y) * -1);
-  transform: rotateX(var(--rot-x, 10.73deg)) rotateY(var(--rot-y, 0deg)) rotateZ(var(--rot-z, 0deg));
-
-  --tilt-angle-1: calc(90deg - acos(sqrt((5 + 2 * sqrt(5)) / 15)));
-  --tilt-angle-2: calc(-90deg - acos(sqrt((5 - 2 * sqrt(5)) / 15)));
-  --tilt-angle-3: calc(-90deg + acos(sqrt((5 - 2 * sqrt(5)) / 15)));
-  --tilt-angle-4: calc(90deg + acos(sqrt((5 + 2 * sqrt(5)) / 15)));
-  --vertical-adjust-1: calc(sqrt(50 + 10 * sqrt(5)) * -1 * var(--size) / (2 * 10));
-  --vertical-adjust-2: calc(var(--vertical-adjust-1) * -1);
-  --horizontal-adjust: calc(var(--size) / (2 * tan(36deg)));
-}
-
-.d20>* {
-  height: calc(100% * sqrt(3) / 2);
-  padding: 12.5cqw 0 0 0;
-  font-size: 18cqw;
-  transform-origin: center bottom;
-}
-
-.d20>.face-1 {
-  transform: rotateY(0deg) translateZ(var(--horizontal-adjust)) translateY(var(--vertical-adjust-2)) rotateX(var(--tilt-angle-3));
-}
-
-.d20>.face-2 {
-  transform: rotateY(216deg) translateZ(var(--horizontal-adjust)) translateY(var(--vertical-adjust-2)) rotateX(var(--tilt-angle-3));
-}
-
-.d20>.face-3 {
-  transform: rotateY(324deg) translateZ(var(--horizontal-adjust)) translateY(var(--vertical-adjust-1)) rotateX(var(--tilt-angle-1));
-}
-
-.d20>.face-4 {
-  transform: rotateY(144deg) translateZ(var(--horizontal-adjust)) translateY(var(--vertical-adjust-2)) rotateX(var(--tilt-angle-4)) rotateY(180deg);
-}
-
-.d20>.face-5 {
-  transform: rotateY(288deg) translateZ(var(--horizontal-adjust)) translateY(var(--vertical-adjust-2)) rotateX(var(--tilt-angle-4)) rotateY(180deg);
-}
-
-.d20>.face-6 {
-  transform: rotateY(36deg) translateZ(var(--horizontal-adjust)) translateY(var(--vertical-adjust-1)) rotateX(var(--tilt-angle-2)) rotateY(180deg);
-}
-
-.d20>.face-7 {
-  transform: rotateY(252deg) translateZ(var(--horizontal-adjust)) translateY(var(--vertical-adjust-1)) rotateX(var(--tilt-angle-2)) rotateY(180deg);
-}
-
-.d20>.face-8 {
-  transform: rotateY(180deg) translateZ(var(--horizontal-adjust)) translateY(var(--vertical-adjust-1)) rotateX(var(--tilt-angle-1));
-}
-
-.d20>.face-9 {
-  transform: rotateY(72deg) translateZ(var(--horizontal-adjust)) translateY(var(--vertical-adjust-2)) rotateX(var(--tilt-angle-3));
-}
-
-.d20>.face-10 {
-  transform: rotateY(108deg) translateZ(var(--horizontal-adjust)) translateY(var(--vertical-adjust-1)) rotateX(var(--tilt-angle-1));
-}
-
-.d20>.face-11 {
-  transform: rotateY(72deg) translateZ(var(--horizontal-adjust)) translateY(var(--vertical-adjust-2)) rotateX(var(--tilt-angle-4)) rotateY(180deg);
-}
-
-.d20>.face-12 {
-  transform: rotateY(324deg) translateZ(var(--horizontal-adjust)) translateY(var(--vertical-adjust-1)) rotateX(var(--tilt-angle-2)) rotateY(180deg);
-}
-
-.d20>.face-13 {
-  transform: rotateY(0deg) translateZ(var(--horizontal-adjust)) translateY(var(--vertical-adjust-2)) rotateX(var(--tilt-angle-4)) rotateY(180deg);
-}
-
-.d20>.face-14 {
-  transform: rotateY(144deg) translateZ(var(--horizontal-adjust)) translateY(var(--vertical-adjust-2)) rotateX(var(--tilt-angle-3));
-}
-
-.d20>.face-15 {
-  transform: rotateY(288deg) translateZ(var(--horizontal-adjust)) translateY(var(--vertical-adjust-2)) rotateX(var(--tilt-angle-3));
-}
-
-.d20>.face-16 {
-  transform: rotateY(252deg) translateZ(var(--horizontal-adjust)) translateY(var(--vertical-adjust-1)) rotateX(var(--tilt-angle-1));
-}
-
-.d20>.face-17 {
-  transform: rotateY(36deg) translateZ(var(--horizontal-adjust)) translateY(var(--vertical-adjust-1)) rotateX(var(--tilt-angle-1));
-}
-
-.d20>.face-18 {
-  transform: rotateY(216deg) translateZ(var(--horizontal-adjust)) translateY(var(--vertical-adjust-2)) rotateX(var(--tilt-angle-4)) rotateY(180deg);
-}
-
-.d20>.face-19 {
-  transform: rotateY(108deg) translateZ(var(--horizontal-adjust)) translateY(var(--vertical-adjust-1)) rotateX(var(--tilt-angle-2)) rotateY(180deg);
-}
-
-.d20>.face-20 {
-  transform: rotateY(180deg) translateZ(var(--horizontal-adjust)) translateY(var(--vertical-adjust-1)) rotateX(var(--tilt-angle-2)) rotateY(180deg);
+  font-size: 15cqh;
 }
 
 /* ── Coin section ────────────────────────────────────────── */

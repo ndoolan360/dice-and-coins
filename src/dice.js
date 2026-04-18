@@ -310,18 +310,22 @@ function aggregateDieTypes(dieTypes, separator = ' + ') {
     .join(separator);
 }
 
-const radToDeg = (angle) => angle * (180 / Math.PI);
-const d4Tilt = radToDeg(Math.acos(1 / 3));
-const d8Tilt = radToDeg(Math.acos(-1 / 3));
-const d10Tilt = radToDeg(-Math.asin(Math.pow(5, -0.25)));
-const d12Tilt = radToDeg(Math.atan(2));
+const RAD2DEG = 180 / Math.PI;
+const tetrahedronDihedralAngle = Math.acos(1 / 3) * RAD2DEG;
+const octahedronDihedralAngle = Math.acos(-1 / 3) * RAD2DEG;
+const d10DihedralAngle = Math.acos(Math.sqrt((5 - Math.sqrt(5)) / 5)) * RAD2DEG;
+const dodecahedronDihedralAngle = Math.acos(-1 / Math.sqrt(5)) * RAD2DEG;
+const icosahedronDihedralAngle = Math.acos(-Math.sqrt(5) / 3) * RAD2DEG;
+const icosahedronSkew = Math.acos(Math.sqrt(5 / 8)) * RAD2DEG;
+const icosahedronRingX = Math.acos(1 / Math.sqrt(6)) * RAD2DEG;
+const icosahedronRingY = Math.acos(Math.sqrt(2 / 3)) * RAD2DEG;
 
 const diceRotations = {
   d4: {
     "1": { x: 0, y: 0, z: 0 },
-    "2": { x: d4Tilt, y: 180, z: 120 },
-    "3": { x: d4Tilt, y: 180, z: -120 },
-    "4": { x: d4Tilt, y: 180, z: 0 }
+    "2": { x: tetrahedronDihedralAngle, y: 180, z: 120 },
+    "3": { x: tetrahedronDihedralAngle, y: 180, z: -120 },
+    "4": { x: tetrahedronDihedralAngle, y: 180, z: 0 }
   },
   d6: {
     "1": { x: 0, y: 0, z: 0 },
@@ -333,66 +337,63 @@ const diceRotations = {
   },
   d8: {
     "1": { x: 0, y: 0, z: 0 },
-    "2": { x: -d4Tilt, y: 0, z: -60 },
-    "3": { x: -d4Tilt, y: 0, z: 60 },
-    "4": { x: -d4Tilt, y: 0, z: 180 },
-    "5": { x: d8Tilt, y: 0, z: 180 },
-    "6": { x: d8Tilt, y: 0, z: 60 },
-    "7": { x: d8Tilt, y: 0, z: -60 },
+    "2": { x: -tetrahedronDihedralAngle, y: 0, z: -60 },
+    "3": { x: -tetrahedronDihedralAngle, y: 0, z: 60 },
+    "4": { x: -tetrahedronDihedralAngle, y: 0, z: 180 },
+    "5": { x: octahedronDihedralAngle, y: 0, z: 180 },
+    "6": { x: octahedronDihedralAngle, y: 0, z: 60 },
+    "7": { x: octahedronDihedralAngle, y: 0, z: -60 },
     "8": { x: 180, y: 0, z: 0 }
   },
   d10: {
-    "1": { x: d10Tilt, y: 0, z: 0 },
-    "2": { x: d10Tilt, y: -72, z: 0 },
-    "3": { x: d10Tilt, y: -144, z: 0 },
-    "4": { x: d10Tilt, y: 144, z: 0 },
-    "5": { x: d10Tilt, y: 72, z: 0 },
-    "6": { x: d10Tilt - 180, y: 72, z: 0 },
-    "7": { x: d10Tilt - 180, y: 144, z: 0 },
-    "8": { x: d10Tilt - 180, y: -144, z: 0 },
-    "9": { x: d10Tilt - 180, y: -72, z: 0 },
-    "10": { x: d10Tilt - 180, y: 0, z: 0 }
+    "1": { x: -d10DihedralAngle, y: 0, z: 0 },
+    "2": { x: -d10DihedralAngle, y: -72, z: 0 },
+    "3": { x: -d10DihedralAngle, y: -144, z: 0 },
+    "4": { x: -d10DihedralAngle, y: 144, z: 0 },
+    "5": { x: -d10DihedralAngle, y: 72, z: 0 },
+    "6": { x: 180 - d10DihedralAngle, y: 72, z: 0 },
+    "7": { x: 180 - d10DihedralAngle, y: 144, z: 0 },
+    "8": { x: 180 - d10DihedralAngle, y: -144, z: 0 },
+    "9": { x: 180 - d10DihedralAngle, y: -72, z: 0 },
+    "10": { x: 180 - d10DihedralAngle, y: 0, z: 0 }
   },
   d12: {
     "1": { x: 0, y: 0, z: 0 },
-    "2": { x: -d12Tilt, y: 0, z: -36 },
-    "3": { x: 180 - d12Tilt, y: 0, z: -36 },
-    "4": { x: -d12Tilt, y: 0, z: -108 },
-    "5": { x: 180 - d12Tilt, y: 0, z: -108 },
-    "6": { x: -d12Tilt, y: 0, z: 180 },
-    "7": { x: 180 - d12Tilt, y: 0, z: 180 },
-    "8": { x: -d12Tilt, y: 0, z: 108 },
-    "9": { x: 180 - d12Tilt, y: 0, z: 108 },
-    "10": { x: -d12Tilt, y: 0, z: 36 },
-    "11": { x: 180 - d12Tilt, y: 0, z: 36 },
+    "2": { x: dodecahedronDihedralAngle + 180, y: 0, z: -36 },
+    "3": { x: dodecahedronDihedralAngle, y: 0, z: -36 },
+    "4": { x: dodecahedronDihedralAngle + 180, y: 0, z: -108 },
+    "5": { x: dodecahedronDihedralAngle, y: 0, z: -108 },
+    "6": { x: dodecahedronDihedralAngle + 180, y: 0, z: 180 },
+    "7": { x: dodecahedronDihedralAngle, y: 0, z: 180 },
+    "8": { x: dodecahedronDihedralAngle + 180, y: 0, z: 108 },
+    "9": { x: dodecahedronDihedralAngle, y: 0, z: 108 },
+    "10": { x: dodecahedronDihedralAngle + 180, y: 0, z: 36 },
+    "11": { x: dodecahedronDihedralAngle, y: 0, z: 36 },
     "12": { x: -180, y: 0, z: 0 }
   },
   d20: {
-    "1": { x: 10.73, y: 0, z: 0 },
-    "2": { x: 10.73, y: -216, z: 0 },
-    "3": { x: -52.62, y: -324, z: 0 },
-    "4": { x: 127.38, y: 36, z: 0 },
-    "5": { x: 127.38, y: -108, z: 0 },
-    "6": { x: -169.27, y: 144, z: 0 },
-    "7": { x: -169.27, y: -72, z: 0 },
-    "8": { x: -52.62, y: -180, z: 0 },
-    "9": { x: 10.73, y: -72, z: 0 },
-    "10": { x: -52.62, y: -108, z: 0 },
-    "11": { x: 127.38, y: 108, z: 0 },
-    "12": { x: -169.27, y: -144, z: 0 },
-    "13": { x: 127.38, y: 180, z: 0 },
-    "14": { x: 10.73, y: -144, z: 0 },
-    "15": { x: 10.73, y: -288, z: 0 },
-    "16": { x: -52.62, y: -252, z: 0 },
-    "17": { x: -52.62, y: -36, z: 0 },
-    "18": { x: 127.38, y: -36, z: 0 },
-    "19": { x: -169.27, y: 72, z: 0 },
-    "20": { x: -169.27, y: 0, z: 0 }
+    "1": { x: 0, y: 0, z: 0 },
+    "2": { x: icosahedronDihedralAngle, y: 0, z: -60 },
+    "3": { x: -icosahedronRingX, y: -icosahedronRingY, z: 30 - icosahedronSkew },
+    "4": { x: 180 - icosahedronRingX, y: icosahedronRingY, z: icosahedronSkew - 30 },
+    "5": { x: -icosahedronRingX, y: -icosahedronRingY, z: -(90 + icosahedronSkew) },
+    "6": { x: 180 - icosahedronRingX, y: -icosahedronRingY, z: 150 - icosahedronSkew },
+    "7": { x: icosahedronDihedralAngle - 180, y: 0, z: 60 },
+    "8": { x: icosahedronDihedralAngle, y: 0, z: -180 },
+    "9": { x: -icosahedronRingX, y: icosahedronRingY, z: icosahedronSkew - 150 },
+    "10": { x: 180 - icosahedronRingX, y: icosahedronRingY, z: 90 + icosahedronSkew },
+    "11": { x: -icosahedronRingX, y: icosahedronRingY, z: 90 + icosahedronSkew },
+    "12": { x: 180 - icosahedronRingX, y: icosahedronRingY, z: icosahedronSkew - 150 },
+    "13": { x: icosahedronDihedralAngle - 180, y: 0, z: -180 },
+    "14": { x: icosahedronDihedralAngle, y: 0, z: 60 },
+    "15": { x: -icosahedronRingX, y: -icosahedronRingY, z: 150 - icosahedronSkew },
+    "16": { x: 180 - icosahedronRingX, y: -icosahedronRingY, z: -(90 + icosahedronSkew) },
+    "17": { x: -icosahedronRingX, y: icosahedronRingY, z: icosahedronSkew - 30 },
+    "18": { x: 180 - icosahedronRingX, y: -icosahedronRingY, z: 30 - icosahedronSkew },
+    "19": { x: icosahedronDihedralAngle - 180, y: 0, z: -60 },
+    "20": { x: -180, y: 0, z: 0 }
   }
 };
-
-const dieRotX = new WeakMap();
-const dieRotY = new WeakMap();
 
 export function gotoRoll(element, facenum) {
   const shapeType = getDieType(element, { considerOnlyShape: true });
@@ -405,19 +406,14 @@ export function gotoRoll(element, facenum) {
   const roll = ((facenum - 1) % max) + 1;
   const rotation = diceRotations[shapeType][roll];
 
-  const targetX = rotation.x ?? 0;
-  const currentX = dieRotX.get(element) ?? 0;
-  const extraX = 2 * 360;
-  const newX = currentX + extraX + ((targetX - currentX - extraX) % 360 + 360) % 360;
-  dieRotX.set(element, newX);
+  const currentX = parseInt(element.style.getPropertyValue('--rot-x'), 10) || 0;
+  const newX = currentX + 1080 + rotation.x - (currentX % 360);
 
-  const targetY = rotation.y ?? 0;
-  const currentY = dieRotY.get(element) ?? 0;
-  const extraY = (Math.random() - 0.5) * 360;
-  const newY = currentY + extraY + ((targetY - currentY - extraY) % 360 + 360) % 360;
-  dieRotY.set(element, newY);
+  const currentY = parseInt(element.style.getPropertyValue('--rot-y'), 10) || 0;
+  const yRoll = Math.random() < 0.5 ? -720 : 720;
+  const newY = currentY + yRoll + rotation.y - (currentY % 360);
 
-  element.style.setProperty('--rot-x', newX + 0.001 + 'deg');
-  element.style.setProperty('--rot-y', newY + 0.001 + 'deg');
-  element.style.setProperty('--rot-z', (rotation.z ?? 0) + 0.001 + 'deg');
+  element.style.setProperty('--rot-x', newX.toFixed(3) + 'deg');
+  element.style.setProperty('--rot-y', newY.toFixed(3) + 'deg');
+  element.style.setProperty('--rot-z', rotation.z.toFixed(3) + 'deg');
 }
