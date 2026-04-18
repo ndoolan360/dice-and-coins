@@ -126,7 +126,10 @@ function addDie(sides) {
     updateDiceParams();
   });
 
-  li.querySelector('.die-roll-single').addEventListener('click', () => rollSingleDie(li));
+  const singleRollBtn = li.querySelector('.die-roll-single');
+  singleRollBtn.addEventListener('click', () => rollSingleDie(li));
+  singleRollBtn.addEventListener("mouseenter", hintBrowser);
+  singleRollBtn.addEventListener("animationEnd", removeHint);
 
   const lockBtn = li.querySelector('.die-lock');
   lockBtn.addEventListener('click', () => {
@@ -183,7 +186,7 @@ function rollDice() {
   const results = [];
   const dieTypes = [];
 
-  dice.forEach((die) => {
+  dice.forEach((die, i) => {
     const wrapper = die.closest('.die-wrapper');
     const dieType = getDieType(die);
     dieTypes.push(dieType);
@@ -197,8 +200,8 @@ function rollDice() {
     const faceValue = faceEl != null ? parseInt(faceEl.textContent, 10) : position;
     results.push(faceValue);
     if (wrapper) wrapper.dataset.value = String(faceValue);
-    gotoRoll(die, position);
     die.setAttribute('aria-label', `${dieType} showing ${faceValue}`);
+    setTimeout(() => gotoRoll(die, position), i * 100);
   });
 
   setTimeout(() => {
@@ -250,6 +253,8 @@ export function initDice() {
   });
 
   diceRoll.addEventListener('click', rollDice);
+  diceRoll.addEventListener("mouseenter", hintBrowser);
+  diceRoll.addEventListener("animationEnd", removeHint);
   diceControls.addEventListener('submit', e => {
     e.preventDefault();
     rollDice();
@@ -263,6 +268,14 @@ export function initDice() {
   updateControls();
   loadColourFromParams();
   loadDiceFromParams();
+}
+
+function hintBrowser() {
+  this.style.willChange = "transform";
+}
+
+function removeHint() {
+  this.style.willChange = "auto";
 }
 
 function parseDiceParam(param) {

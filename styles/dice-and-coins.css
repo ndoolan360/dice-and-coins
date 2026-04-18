@@ -6,8 +6,8 @@
   --phi: calc((1 + sqrt(5)) / 2);
 
   --transition-duration: 0.2s;
-  --coin-flip-duration: 1s;
-  --dice-spin-duration: 1.5s;
+  --coin-flip-duration: 1.5s;
+  --dice-spin-duration: 2.5s;
   --dice-increment-duration: 0.6s;
   --number-scramble-duration: 1s;
 }
@@ -486,7 +486,6 @@ label {
       var(--dice-colour, royalblue),
       color-mix(in srgb, var(--dice-colour, royalblue) 55%, var(--background, #333)));
   color: var(--dice-text, #FFF);
-  backface-visibility: hidden;
 }
 
 [class*="-6"],
@@ -520,7 +519,10 @@ label {
   height: var(--coin-size);
   transform-style: preserve-3d;
   transform: rotateX(0deg);
+  transition: transform var(--coin-flip-duration) ease-out;
   position: relative;
+  border-radius: 50%;
+  cursor: pointer;
 }
 
 .coin-face {

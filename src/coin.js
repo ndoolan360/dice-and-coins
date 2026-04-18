@@ -15,17 +15,14 @@ function flipCoin() {
   const targetFace = isHeads ? 0 : 180;
 
   if (flipDuration > 0) {
-    // Add 3–5 full rotations for a dramatic spin
-    const extraSpins = (3 + Math.floor(Math.random() * 3)) * 360;
-    totalRotation += extraSpins;
+    const extraSpins = Math.ceil(Math.random() * 2);
+    totalRotation += (3 + extraSpins) * 360;
   }
 
-  // Snap to the correct face
   const remainder = totalRotation % 360;
   totalRotation = totalRotation - remainder + targetFace;
 
   coinResult.textContent = '…';
-  coinInner.style.transition = flipDuration > 0 ? `transform ${flipDuration / 1000}s ease-out` : 'none';
   coinInner.style.transform = `rotateX(${totalRotation}deg)`;
 
   const result = isHeads ? 'Heads' : 'Tails';
@@ -39,5 +36,5 @@ function flipCoin() {
 
 export function initCoin() {
   coinFlip.addEventListener('click', flipCoin);
-  coinDisplay.addEventListener('click', flipCoin);
+  coinInner.addEventListener('click', flipCoin);
 }

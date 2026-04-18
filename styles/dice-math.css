@@ -7,7 +7,7 @@
 }
 
 .die>* {
-  transform: translateY(calc(50% - var(--center-y))) var(--rotate, rotate(0)) translateZ(var(--inradius));
+  transform: translateY(calc(50% - var(--center-y))) var(--rotate, rotate(0)) translateZ(var(--inradius)) scale(var(--face-overdraw, 1.01));
   transform-origin: 50% var(--center-y) 0px;
 }
 
@@ -18,7 +18,7 @@
 
   &>* {
     padding-top: 25%;
-    clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+    --path: polygon(50% 0%, 100% 100%, 0% 100%);
   }
 }
 
@@ -29,7 +29,7 @@
     padding-top: 15%;
 
     --y-top: calc(50% * var(--phi));
-    clip-path: polygon(50% 0%, 100% var(--y-top), 50% 100%, 0% var(--y-top));
+    --path: polygon(50% 0%, 100% var(--y-top), 50% 100%, 0% var(--y-top));
   }
 }
 
@@ -41,12 +41,16 @@
 
     --x-inner: calc(50% / var(--phi));
     --y-top: calc(100% / (1 + var(--phi)));
-    clip-path: polygon(50% 0%,
+    --path: polygon(50% 0%,
         100% var(--y-top),
         calc(50% + var(--x-inner)) 100%,
         calc(50% - var(--x-inner)) 100%,
         0% var(--y-top));
   }
+}
+
+.die>* {
+  clip-path: var(--path);
 }
 
 .d4 {

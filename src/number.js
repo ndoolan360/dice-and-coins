@@ -86,7 +86,7 @@ function pickNumber() {
     // Ease-out
     const interval = 50 + 150 * (progress * progress);
 
-    if (now - lastSwap >= interval) {
+    if (now - lastSwap > interval && progress < 0.85) {
       lastSwap = now;
       numberResult.textContent = randomInRange(min, max);
     }
