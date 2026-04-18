@@ -17,8 +17,8 @@
   height: calc(var(--size) * sqrt(3) / 2);
 
   &>* {
-    padding: 28.9% 0 0 0;
-    mask-image: url(../images/triangular-face.svg);
+    padding-top: 25%;
+    clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
   }
 }
 
@@ -26,8 +26,10 @@
   width: calc(var(--size) / sqrt(var(--phi)));
 
   &>* {
-    padding: 15% 0 0 0;
-    mask-image: url(../images/kite-face.svg);
+    padding-top: 15%;
+
+    --y-top: calc(50% * var(--phi));
+    clip-path: polygon(50% 0%, 100% var(--y-top), 50% 100%, 0% var(--y-top));
   }
 }
 
@@ -35,8 +37,15 @@
   height: calc(var(--size) * (sqrt(var(--phi) + 2) / 2));
 
   &>* {
-    padding: 10% 0 0 0;
-    mask-image: url(../images/pentagonal-face.svg);
+    padding-top: 10%;
+
+    --x-inner: calc(50% / var(--phi));
+    --y-top: calc(100% / (1 + var(--phi)));
+    clip-path: polygon(50% 0%,
+        100% var(--y-top),
+        calc(50% + var(--x-inner)) 100%,
+        calc(50% - var(--x-inner)) 100%,
+        0% var(--y-top));
   }
 }
 
