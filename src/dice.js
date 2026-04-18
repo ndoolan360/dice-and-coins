@@ -147,22 +147,16 @@ function showRollResults(results, dieTypes, incrementDuration) {
   const mod = parseInt(diceMod.value, 10) || 0;
   const total = results.reduce((a, b) => a + b, 0) + mod;
 
-  let breakdownParts = [];
-  if (results.length > 1) {
-    breakdownParts = [...results];
-    if (mod !== 0) breakdownParts.push(mod);
-  } else if (mod !== 0) {
-    breakdownParts = [results[0], mod];
-  }
-  diceBreakdown.textContent = breakdownParts.join(' + ').replaceAll('+ -', '- ');
-
-  const description = aggregateDieTypes(dieTypes);
+  const description = aggregateDieTypes(dieTypes)
   const rollStr = results.join(' + ');
-  const modStr = mod !== 0 ? ` + ${mod}` : '';
+  const modStr = mod === 0 ? '' :
+    mod < 0 ? ` - ${-mod}` : ` + ${mod}`;
   if (results.length > 1 || mod !== 0) {
     addHistoryEntry(`🎲 ${description}${modStr}: (${rollStr}${modStr}) ${total}`);
+    diceBreakdown.textContent = `${rollStr}${modStr}`;
   } else {
     addHistoryEntry(`🎲 ${description}: ${total}`);
+    if (results.length > 1) diceBreakdown.textContent = rollStr;
   }
 
   animateCount(diceSum, total, incrementDuration, () => {
