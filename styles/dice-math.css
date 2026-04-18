@@ -49,8 +49,17 @@
   }
 }
 
-.die>* {
-  clip-path: var(--path);
+@supports (border-shape: polygon(0 0, 0 0)) {
+  .die>* {
+    border-shape: var(--path);
+    border: 2px solid var(--dice-colour, royalblue);
+  }
+}
+
+@supports not (border-shape: polygon(0 0, 0 0)) {
+  .die>* {
+    clip-path: var(--path);
+  }
 }
 
 .d4 {
