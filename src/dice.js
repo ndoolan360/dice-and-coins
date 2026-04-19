@@ -5,6 +5,7 @@ const diceRoll = document.getElementById('dice-roll');
 const diceClear = document.getElementById('dice-clear');
 const diceSum = document.getElementById('dice-sum');
 const diceBreakdown = document.getElementById('dice-breakdown');
+const diceResult = document.getElementById('dice-result');
 const diceControls = document.getElementById('dice-controls');
 const diceSelector = document.getElementById('dice-selector');
 const diceMod = document.getElementById('dice-modifier-input');
@@ -138,6 +139,9 @@ function addDie(sides) {
     lockBtn.setAttribute('aria-pressed', String(!locked));
   });
 
+  const die = li.querySelector('.die');
+  setupDieGrab(die, li);
+
   diceTray.appendChild(clone);
   updateControls();
   updateDiceParams();
@@ -157,6 +161,14 @@ function showRollResults(results, dieTypes, incrementDuration) {
   } else {
     addHistoryEntry(`🎲 ${description}: ${total}`);
     if (results.length > 1) diceBreakdown.textContent = rollStr;
+  }
+
+  const hasBumped = Array.from(diceTray.querySelectorAll('.die-wrapper'))
+    .some(w => w.dataset.bumped === 'true');
+  if (hasBumped) {
+    diceResult.dataset.bumped = 'true';
+  } else {
+    diceResult.removeAttribute('data-bumped');
   }
 
   animateCount(diceSum, total, incrementDuration, () => {
@@ -193,7 +205,10 @@ function rollDice() {
     const faceEl = die.querySelector(`.face-${position}`);
     const faceValue = faceEl != null ? parseInt(faceEl.textContent, 10) : position;
     results.push(faceValue);
-    if (wrapper) wrapper.dataset.value = String(faceValue);
+    if (wrapper) {
+      wrapper.dataset.value = String(faceValue);
+      wrapper.dataset.bumped = 'false';
+    }
     die.setAttribute('aria-label', `${dieType} showing ${faceValue}`);
     setTimeout(() => gotoRoll(die, position), i * 100);
   });
@@ -221,6 +236,8 @@ function rollSingleDie(wrapper) {
   const faceEl = die.querySelector(`.face-${position}`);
   const faceValue = faceEl != null ? parseInt(faceEl.textContent, 10) : position;
   wrapper.dataset.value = String(faceValue);
+  wrapper.dataset.bumped = 'false';
+  diceResult.dataset.bumped = 'false';
   gotoRoll(die, position);
   die.setAttribute('aria-label', `${dieType} showing ${faceValue}`);
 
@@ -401,6 +418,217 @@ const diceRotations = {
     "20": { x: -180, y: 0, z: 0 }
   }
 };
+
+function findNearestFace(die) {
+  const shapeType = getDieType(die, { considerOnlyShape: true });
+  const rotations = diceRotations[shapeType];
+
+  const rawX = parseFloat(die.style.getPropertyValue('--rot-x')) || 0;
+  const rawY = parseFloat(die.style.getPropertyValue('--rot-y')) || 0;
+  const rawZ = parseFloat(die.style.getPropertyValue('--rot-z')) || 0;
+
+  // For CSS transform rotateX(rx) rotateY(ry) rotateZ(rz), the matrix is
+  // M = Rx * Ry * Rz. Each face's outward normal in die-local space is
+  // M_face^T * (0,0,1), computed by applying Rx^T then Ry^T then Rz^T to (0,0,1).
+  function faceNormal(rx, ry, rz) {
+    const DEG = Math.PI / 180;
+    const ax = rx * DEG, ay = ry * DEG, az = rz * DEG;
+    let x = 0, y = 0, z = 1;
+    // Rx^T
+    let yr = y * Math.cos(ax) + z * Math.sin(ax);
+    let zr = -y * Math.sin(ax) + z * Math.cos(ax);
+    y = yr; z = zr;
+    // Ry^T
+    let xr = x * Math.cos(ay) - z * Math.sin(ay);
+    zr = x * Math.sin(ay) + z * Math.cos(ay);
+    x = xr; z = zr;
+    // Rz^T
+    xr = x * Math.cos(az) + y * Math.sin(az);
+    yr = -x * Math.sin(az) + y * Math.cos(az);
+    return [xr, yr, z];
+  }
+
+  // Camera direction (+Z world) expressed in the die's local frame.
+  const [dlx, dly, dlz] = faceNormal(rawX, rawY, rawZ);
+
+  let bestFace = 1;
+  let bestDot = -Infinity;
+
+  for (const [face, rot] of Object.entries(rotations)) {
+    const [nx, ny, nz] = faceNormal(rot.x, rot.y, rot.z);
+    const dot = dlx * nx + dly * ny + dlz * nz;
+    if (dot > bestDot) {
+      bestDot = dot;
+      bestFace = parseInt(face);
+    }
+  }
+
+  return bestFace;
+}
+
+function snapToFace(die, facenum) {
+  const shapeType = getDieType(die, { considerOnlyShape: true });
+  const rotation = diceRotations[shapeType][String(facenum)];
+
+  const rawX = parseFloat(die.style.getPropertyValue('--rot-x')) || 0;
+  const rawY = parseFloat(die.style.getPropertyValue('--rot-y')) || 0;
+  const rawZ = parseFloat(die.style.getPropertyValue('--rot-z')) || 0;
+
+  const snapX = Math.round((rawX - rotation.x) / 360) * 360 + rotation.x;
+  const snapY = Math.round((rawY - rotation.y) / 360) * 360 + rotation.y;
+  const snapZ = Math.round((rawZ - rotation.z) / 360) * 360 + rotation.z;
+
+  die.style.setProperty('--rot-x', snapX.toFixed(3) + 'deg');
+  die.style.setProperty('--rot-y', snapY.toFixed(3) + 'deg');
+  die.style.setProperty('--rot-z', snapZ.toFixed(3) + 'deg');
+}
+
+function updateResultAfterBump() {
+  const allWrappers = Array.from(diceTray.querySelectorAll('.die-wrapper'));
+  if (allWrappers.length === 0) return;
+  if (allWrappers.some(w => !w.dataset.value)) return;
+
+  const mod = parseInt(diceMod.value, 10) || 0;
+  const allResults = allWrappers.map(w => parseInt(w.dataset.value, 10));
+  const total = allResults.reduce((a, b) => a + b, 0) + mod;
+
+  diceSum.textContent = String(total);
+  diceResult.dataset.bumped = 'true';
+
+  const rollStr = allResults.join(' + ');
+  const modStr = mod === 0 ? '' : mod < 0 ? ` - ${-mod}` : ` + ${mod}`;
+  if (allResults.length > 1 || mod !== 0) {
+    diceBreakdown.textContent = `${rollStr}${modStr}`;
+  }
+}
+
+function setupDieGrab(die, wrapper) {
+  let isDragging = false;
+  let startX, startY, startQuat;
+
+  // Quaternion helpers — [x, y, z, w] convention.
+  function quatFromAxisAngle(ax, ay, az, angle) {
+    const s = Math.sin(angle / 2);
+    return [ax * s, ay * s, az * s, Math.cos(angle / 2)];
+  }
+
+  function quatMul([x1, y1, z1, w1], [x2, y2, z2, w2]) {
+    return [
+      w1 * x2 + x1 * w2 + y1 * z2 - z1 * y2,
+      w1 * y2 - x1 * z2 + y1 * w2 + z1 * x2,
+      w1 * z2 + x1 * y2 - y1 * x2 + z1 * w2,
+      w1 * w2 - x1 * x2 - y1 * y2 - z1 * z2,
+    ];
+  }
+
+  // Convert CSS rotateX(rx)*rotateY(ry)*rotateZ(rz) Euler angles (degrees)
+  // to the equivalent quaternion Q = Qx*Qy*Qz.
+  function quatFromEuler(rx, ry, rz) {
+    const DEG = Math.PI / 180;
+    return quatMul(
+      quatMul(quatFromAxisAngle(1, 0, 0, rx * DEG),
+        quatFromAxisAngle(0, 1, 0, ry * DEG)),
+      quatFromAxisAngle(0, 0, 1, rz * DEG));
+  }
+
+  // Decompose quaternion back into Rx*Ry*Rz Euler angles (degrees).
+  // Uses the standard ZYX decomposition of the combined rotation matrix:
+  //   M[0][2] = sin(ry)          = 2(xz + wy)
+  //   M[1][2] = -sin(rx)*cos(ry) = 2(yz - wx)
+  //   M[2][2] = cos(rx)*cos(ry)  = 1 - 2(x²+y²)
+  //   M[0][1] = -sin(rz)*cos(ry) = 2(xy - wz)
+  //   M[0][0] = cos(rz)*cos(ry)  = 1 - 2(y²+z²)
+  function quatToEuler([x, y, z, w]) {
+    const RAD2DEG = 180 / Math.PI;
+    const sinRy = Math.max(-1, Math.min(1, 2 * (x * z + w * y)));
+    const ry = Math.asin(sinRy) * RAD2DEG;
+    let rx, rz;
+    if (Math.abs(sinRy) < 0.9999) {
+      rx = Math.atan2(-2 * (y * z - w * x), 1 - 2 * (x * x + y * y)) * RAD2DEG;
+      rz = Math.atan2(-2 * (x * y - w * z), 1 - 2 * (y * y + z * z)) * RAD2DEG;
+    } else {
+      // Gimbal lock (ry ≈ ±90°): fix rz = 0, absorb into rx.
+      rx = Math.atan2(2 * (x * y + w * z), 1 - 2 * (x * x + z * z)) * RAD2DEG;
+      rz = 0;
+    }
+    return { x: rx, y: ry, z: rz };
+  }
+
+  function onPointerDown(e) {
+    if (wrapper.dataset.locked === 'true') return;
+    if (isRolling) return;
+    if (e.button !== undefined && e.button !== 0) return;
+    if (e.target.closest('button')) return;
+
+    e.preventDefault();
+    isDragging = true;
+    die.setPointerCapture(e.pointerId);
+
+    startX = e.clientX;
+    startY = e.clientY;
+
+    const rawX = parseFloat(die.style.getPropertyValue('--rot-x')) || 0;
+    const rawY = parseFloat(die.style.getPropertyValue('--rot-y')) || 0;
+    const rawZ = parseFloat(die.style.getPropertyValue('--rot-z')) || 0;
+    startQuat = quatFromEuler(rawX, rawY, rawZ);
+
+    die.style.transition = 'transform 0s';
+    document.body.style.cursor = 'grabbing';
+  }
+
+  function onPointerMove(e) {
+    if (!isDragging) return;
+
+    const dx = e.clientX - startX;
+    const dy = e.clientY - startY;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    if (dist < 0.5) return;
+
+    // Rotation axis is perpendicular to the drag direction in screen space.
+    // Dragging right (+dx) → rotate around screen +Y.
+    // Dragging down  (+dy) → rotate around screen -X (CSS Y is down, right-hand rule).
+    const axisX = -dy / dist;
+    const axisY = dx / dist;
+
+    // π radians per full die diameter gives a natural 1:1 surface-drag feel.
+    const diameter = wrapper.getBoundingClientRect().width || 100;
+    const angle = (dist / diameter) * Math.PI;
+
+    // Apply the world-space drag rotation on top of the captured start orientation.
+    const qDrag = quatFromAxisAngle(axisX, axisY, 0, angle);
+    const euler = quatToEuler(quatMul(qDrag, startQuat));
+
+    die.style.setProperty('--rot-x', euler.x.toFixed(3) + 'deg');
+    die.style.setProperty('--rot-y', euler.y.toFixed(3) + 'deg');
+    die.style.setProperty('--rot-z', euler.z.toFixed(3) + 'deg');
+  }
+
+  function onPointerUp() {
+    if (!isDragging) return;
+    isDragging = false;
+    document.body.style.cursor = '';
+
+    die.style.transition = 'transform 0.2s ease';
+    const facePos = findNearestFace(die);
+    snapToFace(die, facePos);
+
+    const faceEl = die.querySelector(`.face-${facePos}`);
+    const faceValue = faceEl ? parseInt(faceEl.textContent, 10) : facePos;
+    wrapper.dataset.value = String(faceValue);
+    wrapper.dataset.bumped = 'true';
+    die.setAttribute('aria-label', `${getDieType(die)} showing ${faceValue}`);
+
+    setTimeout(() => {
+      die.style.transition = '';
+      updateResultAfterBump();
+    }, 250);
+  }
+
+  die.addEventListener('pointerdown', onPointerDown);
+  die.addEventListener('pointermove', onPointerMove);
+  die.addEventListener('pointerup', onPointerUp);
+  die.addEventListener('pointercancel', onPointerUp);
+}
 
 export function gotoRoll(element, facenum) {
   const shapeType = getDieType(element, { considerOnlyShape: true });

@@ -281,6 +281,13 @@ label {
   color: var(--accent, royalblue);
 }
 
+#dice-result[data-bumped="true"] #dice-sum::after {
+  content: "*";
+  font-size: 0.5em;
+  vertical-align: super;
+  opacity: 0.7;
+}
+
 #dice-breakdown {
   font-size: 0.9rem;
   height: 1.2rem;
@@ -474,6 +481,11 @@ label {
   transition: transform var(--dice-spin-duration) ease;
   font-size: 22.5cqh;
   font-weight: 700;
+}
+
+.die-wrapper:not([data-locked="true"]) .die {
+  cursor: grab;
+  touch-action: none;
 }
 
 .die>* {
